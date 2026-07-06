@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation";
+import Link from "next/link";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { Card } from "@heroui/react";
@@ -22,6 +23,13 @@ export default async function DashboardSettingsPage() {
   return (
     <div className="flex flex-1 flex-col bg-surface-secondary px-6 py-12">
       <div className="mx-auto flex w-full max-w-2xl flex-col gap-6">
+        <Link
+          href="/dashboard"
+          className="text-sm font-medium text-muted hover:text-foreground"
+        >
+          ← Back to dashboard
+        </Link>
+
         <DashboardHeader business={business} />
 
         <Card>

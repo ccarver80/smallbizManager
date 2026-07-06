@@ -6,6 +6,7 @@ import type {
   Business,
   Message,
   Order,
+  OrderItem,
   Photo,
   Product,
 } from "@/lib/generated/prisma/client";
@@ -79,7 +80,7 @@ export function PublishedDashboard({
     appointments: Appointment[];
     messages: Message[];
     products: Product[];
-    orders: (Order & { product: Product | null })[];
+    orders: (Order & { items: (OrderItem & { product: Product | null })[] })[];
   };
 }) {
   const isService = business.businessType === BusinessType.SERVICE;
@@ -169,11 +170,15 @@ export function PublishedDashboard({
                         key={order.id}
                         className="rounded-lg border border-border p-3 text-sm"
                       >
-                        <p className="font-medium text-foreground">
-                          {order.customerName}
-                          {order.product && ` · ${order.product.title}`} × {order.quantity}
-                        </p>
+                        <p className="font-medium text-foreground">{order.customerName}</p>
                         <p className="text-muted">{order.customerEmail}</p>
+                        <ul className="mt-1 list-inside list-disc text-muted">
+                          {order.items.map((item) => (
+                            <li key={item.id}>
+                              {item.product?.title ?? item.description} × {item.quantity}
+                            </li>
+                          ))}
+                        </ul>
                         {order.notes && <p className="mt-1 text-muted">{order.notes}</p>}
                       </li>
                     ))}

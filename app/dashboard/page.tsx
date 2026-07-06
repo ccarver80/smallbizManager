@@ -22,7 +22,10 @@ export default async function DashboardPage() {
       },
       messages: { orderBy: { createdAt: "desc" } },
       products: { orderBy: { sortOrder: "asc" } },
-      orders: { orderBy: { createdAt: "desc" }, include: { product: true } },
+      orders: {
+        orderBy: { createdAt: "desc" },
+        include: { items: { include: { product: true } } },
+      },
     },
   });
 
