@@ -10,6 +10,6 @@ export default defineConfig({
   datasource: {
     // Migrations need a direct (non-pooled) connection; the app uses
     // DATABASE_URL (pooled) at runtime via the driver adapter instead.
-    url: env("DIRECT_URL"),
+    url: env("DATABASE_URL_UNPOOLED"),
   },
 });

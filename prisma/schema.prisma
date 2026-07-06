@@ -7,6 +7,23 @@ datasource db {
   provider = "postgresql"
 }
 
+enum BusinessType {
+  SERVICE
+  PRODUCT
+}
+
+enum AppointmentStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+}
+
+enum OrderStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+}
+
 model User {
   id         String   @id @default(cuid())
   email      String   @unique
@@ -17,21 +34,63 @@ model User {
   businessId String
 }
 
+model Plans {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  price       Decimal  @db.Decimal(10, 2)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
 model Business {
-  id           String   @id @default(cuid())
-  subdomain    String   @unique
+  id           String        @id @default(cuid())
+  subdomain    String        @unique
   name         String
   tagline      String?
   aboutText    String?
   contactEmail String?
   contactPhone String?
   address      String?
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  published    Boolean       @default(false)
+  businessType BusinessType  @default(SERVICE)
+  products     Product[]
+  reviews      Review[]
+  users        User[]
+  customers    Customer[]
+  messages     Message[]
+  photos       Photo[]
+  page_views   Int           @default(0)
+  appointments Appointment[]
+  orders       Order[]
+}
 
-  products Product[]
-  reviews  Review[]
-  users    User[]
+model Customer {
+  id         String   @id @default(cuid())
+  first_name String
+  last_name  String
+  email      String?
+  phone      String?
+  businessId String
+  business   Business @relation(fields: [businessId], references: [id])
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([businessId])
+}
+
+model Message {
+  id            String   @id @default(cuid())
+  contact_email String
+  body          String
+  businessId    String
+  business      Business @relation(fields: [businessId], references: [id])
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([businessId])
 }
 
 model Product {
@@ -44,6 +103,8 @@ model Product {
   price       Decimal? @db.Decimal(10, 2)
   sortOrder   Int      @default(0)
   createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  orders      Order[]
 
   @@index([businessId])
 }
@@ -56,6 +117,53 @@ model Review {
   rating     Int
   body       String
   createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 
   @@index([businessId])
+}
+
+model Photo {
+  id         String   @id @default(cuid())
+  businessId String
+  business   Business @relation(fields: [businessId], references: [id])
+  url        String
+  key        String
+  caption    String?
+  sortOrder  Int      @default(0)
+  createdAt  DateTime @default(now())
+
+  @@index([businessId])
+}
+
+model Appointment {
+  id            String            @id @default(cuid())
+  businessId    String
+  business      Business          @relation(fields: [businessId], references: [id])
+  customerName  String
+  customerEmail String
+  customerPhone String?
+  requestedAt   DateTime
+  notes         String?
+  status        AppointmentStatus @default(PENDING)
+  createdAt     DateTime          @default(now())
+
+  @@index([businessId])
+}
+
+model Order {
+  id            String      @id @default(cuid())
+  businessId    String
+  business      Business    @relation(fields: [businessId], references: [id])
+  productId     String?
+  product       Product?    @relation(fields: [productId], references: [id])
+  customerName  String
+  customerEmail String
+  customerPhone String?
+  quantity      Int         @default(1)
+  notes         String?
+  status        OrderStatus @default(PENDING)
+  createdAt     DateTime    @default(now())
+
+  @@index([businessId])
+  @@index([productId])
 }

@@ -8,7 +8,14 @@
  *
  * 🟢 You can import this file directly.
  */
+export type * from './models/User'
+export type * from './models/Plans'
 export type * from './models/Business'
+export type * from './models/Customer'
+export type * from './models/Message'
 export type * from './models/Product'
 export type * from './models/Review'
+export type * from './models/Photo'
+export type * from './models/Appointment'
+export type * from './models/Order'
 export type * from './commonInputTypes'
