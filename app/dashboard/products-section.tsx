@@ -17,7 +17,9 @@ import { UploadButton } from "@/lib/uploadthing";
 import { addProduct, deleteProduct, type ProductState } from "./product-actions";
 import type { Product } from "@/lib/generated/prisma/client";
 
-export function ProductsSection({ products }: { products: Product[] }) {
+type ProductSummary = Omit<Product, "price"> & { price: number | null };
+
+export function ProductsSection({ products }: { products: ProductSummary[] }) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [state, formAction, isSubmitting] = useActionState<ProductState, FormData>(

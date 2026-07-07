@@ -87,10 +87,20 @@ export type Photo = Prisma.PhotoModel
  */
 export type Appointment = Prisma.AppointmentModel
 /**
+ * Model AppointmentNote
+ * 
+ */
+export type AppointmentNote = Prisma.AppointmentNoteModel
+/**
  * Model Order
  * 
  */
 export type Order = Prisma.OrderModel
+/**
+ * Model OrderNote
+ * 
+ */
+export type OrderNote = Prisma.OrderNoteModel
 /**
  * Model OrderItem
  * 

@@ -13,15 +13,15 @@ enum BusinessType {
 }
 
 enum AppointmentStatus {
-  PENDING
-  CONFIRMED
-  CANCELLED
+  NEW
+  ACCEPTED
+  FINISHED
 }
 
 enum OrderStatus {
+  NEW
   PENDING
-  CONFIRMED
-  CANCELLED
+  FINISHED
 }
 
 model User {
@@ -144,10 +144,21 @@ model Appointment {
   customerPhone String?
   requestedAt   DateTime
   notes         String?
-  status        AppointmentStatus @default(PENDING)
+  status        AppointmentStatus @default(NEW)
   createdAt     DateTime          @default(now())
+  user_notes    AppointmentNote[]
 
   @@index([businessId])
+}
+
+model AppointmentNote {
+  id            String      @id @default(cuid())
+  appointmentId String
+  appointment   Appointment @relation(fields: [appointmentId], references: [id], onDelete: Cascade)
+  note          String
+  createdAt     DateTime    @default(now())
+
+  @@index([appointmentId])
 }
 
 model Order {
@@ -155,14 +166,26 @@ model Order {
   businessId    String
   business      Business    @relation(fields: [businessId], references: [id])
   customerName  String
-  customerEmail String
+  customerEmail String?
   customerPhone String?
   notes         String?
-  status        OrderStatus @default(PENDING)
+  paid          Boolean     @default(false)
+  status        OrderStatus @default(NEW)
   createdAt     DateTime    @default(now())
   items         OrderItem[]
+  user_notes    OrderNote[]
 
   @@index([businessId])
+}
+
+model OrderNote {
+  id        String   @id @default(cuid())
+  orderId   String
+  order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  note      String
+  createdAt DateTime @default(now())
+
+  @@index([orderId])
 }
 
 model OrderItem {

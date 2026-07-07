@@ -18,18 +18,18 @@ export type BusinessType = (typeof BusinessType)[keyof typeof BusinessType]
 
 
 export const AppointmentStatus = {
-  PENDING: 'PENDING',
-  CONFIRMED: 'CONFIRMED',
-  CANCELLED: 'CANCELLED'
+  NEW: 'NEW',
+  ACCEPTED: 'ACCEPTED',
+  FINISHED: 'FINISHED'
 } as const
 
 export type AppointmentStatus = (typeof AppointmentStatus)[keyof typeof AppointmentStatus]
 
 
 export const OrderStatus = {
+  NEW: 'NEW',
   PENDING: 'PENDING',
-  CONFIRMED: 'CONFIRMED',
-  CANCELLED: 'CANCELLED'
+  FINISHED: 'FINISHED'
 } as const
 
 export type OrderStatus = (typeof OrderStatus)[keyof typeof OrderStatus]

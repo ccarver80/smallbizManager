@@ -192,7 +192,10 @@ export default async function TenantHomePage({ params }: Props) {
           <OrderSection
             businessId={business.id}
             subdomain={business.subdomain}
-            products={business.products}
+            products={business.products.map((product) => ({
+              ...product,
+              price: product.price ? Number(product.price) : null,
+            }))}
           />
         )}
 

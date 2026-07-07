@@ -17,14 +17,18 @@ export default async function DashboardPage() {
     include: {
       photos: { orderBy: { createdAt: "asc" } },
       appointments: {
-        where: { requestedAt: { gt: new Date() } },
-        orderBy: { requestedAt: "asc" },
+        orderBy: { requestedAt: "desc" },
+        include: { user_notes: { orderBy: { createdAt: "desc" } } },
       },
       messages: { orderBy: { createdAt: "desc" } },
       products: { orderBy: { sortOrder: "asc" } },
+      customers: { orderBy: { createdAt: "desc" } },
       orders: {
         orderBy: { createdAt: "desc" },
-        include: { items: { include: { product: true } } },
+        include: {
+          items: { include: { product: true } },
+          user_notes: { orderBy: { createdAt: "desc" } },
+        },
       },
     },
   });

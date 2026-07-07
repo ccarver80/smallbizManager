@@ -151,19 +151,14 @@ export async function sendMessage(
   return { success: true, message: "Your message has been sent!" };
 }
 
-const OrderItemSchema = z
-  .object({
-    productId: optionalText(100),
-    description: optionalText(200),
-    quantity: z.coerce
-      .number("Enter a valid quantity.")
-      .int()
-      .min(1, "Quantity must be at least 1.")
-      .max(999),
-  })
-  .refine((item) => item.productId || item.description, {
-    message: "Choose a product or describe what you'd like.",
-  });
+const OrderItemSchema = z.object({
+  productId: z.string().trim().min(1, "Choose a product."),
+  quantity: z.coerce
+    .number("Enter a valid quantity.")
+    .int()
+    .min(1, "Quantity must be at least 1.")
+    .max(999),
+});
 
 const OrderSchema = z.object({
   items: z.array(OrderItemSchema).min(1, "Add at least one item."),
@@ -194,16 +189,14 @@ export async function requestOrder(
   formData: FormData,
 ): Promise<OrderState> {
   const productIds = formData.getAll("productId[]");
-  const descriptions = formData.getAll("description[]");
   const quantities = formData.getAll("quantity[]");
 
   const rawItems = productIds
     .map((productId, index) => ({
       productId,
-      description: descriptions[index],
       quantity: quantities[index],
     }))
-    .filter((item) => item.productId || item.description);
+    .filter((item) => item.productId);
 
   const validatedFields = OrderSchema.safeParse({
     items: rawItems,
@@ -220,19 +213,23 @@ export async function requestOrder(
   const { items, ...orderFields } = validatedFields.data;
 
   const businessProducts = await prisma.product.findMany({
-    where: { businessId, id: { in: items.flatMap((item) => item.productId ?? []) } },
+    where: { businessId, id: { in: items.map((item) => item.productId) } },
     select: { id: true },
   });
   const validProductIds = new Set(businessProducts.map((product) => product.id));
+  const validItems = items.filter((item) => validProductIds.has(item.productId));
+
+  if (validItems.length === 0) {
+    return { errors: { items: ["Choose at least one valid product."] } };
+  }
 
   await prisma.order.create({
     data: {
       businessId,
       ...orderFields,
       items: {
-        create: items.map((item) => ({
-          productId: item.productId && validProductIds.has(item.productId) ? item.productId : null,
-          description: item.description,
+        create: validItems.map((item) => ({
+          productId: item.productId,
           quantity: item.quantity,
         })),
       },

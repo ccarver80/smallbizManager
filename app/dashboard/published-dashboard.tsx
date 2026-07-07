@@ -1,48 +1,37 @@
 import Link from "next/link";
-import { Card, EmptyState, Typography, buttonVariants } from "@heroui/react";
+import {
+  Card,
+  EmptyState,
+  Tabs,
+  Typography,
+  buttonVariants,
+} from "@heroui/react";
 import { BusinessType } from "@/lib/generated/prisma/enums";
 import type {
   Appointment,
+  AppointmentNote,
   Business,
+  Customer,
   Message,
   Order,
   OrderItem,
+  OrderNote,
   Photo,
   Product,
 } from "@/lib/generated/prisma/client";
 import { DashboardHeader } from "./dashboard-header";
 import { PhotosSection } from "./photos-section";
 import { ProductsSection } from "./products-section";
+import { CustomersSection } from "./customers-section";
+import { OrdersTable } from "./orders-table";
+import { AddOrderForm } from "./add-order-form";
+import { AppointmentsTable } from "./appointments-table";
 
 const calendarIcon = (
   <path
     strokeLinecap="round"
     strokeLinejoin="round"
     d="M8 3v3m8-3v3M4.5 9h15M6 5h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Z"
-  />
-);
-
-const clockIcon = (
-  <path
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    d="M12 8v4l2.5 2.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-  />
-);
-
-const boxIcon = (
-  <path
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    d="M4 5h16v14H4V5Zm0 5h16M9 20V10"
-  />
-);
-
-const clipboardIcon = (
-  <path
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    d="M9 3.75h6a1.5 1.5 0 0 1 1.5 1.5v.75h1.5a1.5 1.5 0 0 1 1.5 1.5v12a1.5 1.5 0 0 1-1.5 1.5H6a1.5 1.5 0 0 1-1.5-1.5v-12A1.5 1.5 0 0 1 6 6h1.5v-.75A1.5 1.5 0 0 1 9 3.75Zm0 3h6v-1.5H9v1.5Z"
   />
 );
 
@@ -54,83 +43,150 @@ const messageIcon = (
   />
 );
 
-const serviceSections = [
-  {
-    title: "Calendar",
-    description: "Your booked days and availability will show up here.",
-    icon: calendarIcon,
-    empty: "No availability set up yet",
-  },
-];
-
-const productSections = [
-  {
-    title: "Custom requests",
-    description: "Custom order requests from customers will show up here.",
-    icon: clipboardIcon,
-    empty: "No custom requests yet",
-  },
-];
-
 export function PublishedDashboard({
   business,
 }: {
   business: Business & {
     photos: Photo[];
-    appointments: Appointment[];
+    appointments: (Appointment & { user_notes: AppointmentNote[] })[];
     messages: Message[];
     products: Product[];
-    orders: (Order & { items: (OrderItem & { product: Product | null })[] })[];
+    orders: (Order & {
+      items: (OrderItem & { product: Product | null })[];
+      user_notes: OrderNote[];
+    })[];
+    customers: Customer[];
   };
 }) {
   const isService = business.businessType === BusinessType.SERVICE;
-  const sections = isService ? serviceSections : productSections;
+  const catalogTabId = isService ? "photos" : "products";
 
   return (
     <div className="flex flex-1 flex-col bg-surface-secondary px-6 py-12">
       <div className="mx-auto flex w-full max-w-5xl flex-col gap-6">
         <DashboardHeader business={business} />
 
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          <Card>
-            <Card.Header>
-              <Card.Title>Page views</Card.Title>
-              <Card.Description>Total visits to your public page.</Card.Description>
-            </Card.Header>
-            <Card.Content>
-              <Typography.Heading level={3} className="text-4xl">
-                {business.page_views.toLocaleString()}
-              </Typography.Heading>
-            </Card.Content>
-          </Card>
+        <Tabs>
+          <Tabs.ListContainer>
+            <Tabs.List aria-label="Dashboard sections">
+              <Tabs.Tab id="overview">Overview</Tabs.Tab>
+              {isService && <Tabs.Tab id="appointments">Appointments</Tabs.Tab>}
+              {isService && <Tabs.Tab id="calendar">Calendar</Tabs.Tab>}
+              {!isService && <Tabs.Tab id="orders">Orders</Tabs.Tab>}
+              <Tabs.Tab id="messages">Messages</Tabs.Tab>
+              <Tabs.Tab id={catalogTabId}>
+                {isService ? "Photos" : "Products"}
+              </Tabs.Tab>
+              <Tabs.Tab id="customers">Customers</Tabs.Tab>
+              <Tabs.Tab id="settings">Settings</Tabs.Tab>
+            </Tabs.List>
+          </Tabs.ListContainer>
 
-          {isService && (
+          <Tabs.Panel id="overview" className="pt-6">
             <Card>
               <Card.Header>
-                <Card.Title>Upcoming appointments</Card.Title>
+                <Card.Title>Page views</Card.Title>
                 <Card.Description>
-                  Customer bookings requested through your page.
+                  Total visits to your public page.
                 </Card.Description>
               </Card.Header>
               <Card.Content>
-                {business.appointments.length > 0 ? (
+                <Typography.Heading level={3} className="text-4xl">
+                  {business.page_views.toLocaleString()}
+                </Typography.Heading>
+              </Card.Content>
+            </Card>
+          </Tabs.Panel>
+
+          {isService && (
+            <Tabs.Panel id="appointments" className="pt-6">
+              <AppointmentsTable appointments={business.appointments} />
+            </Tabs.Panel>
+          )}
+
+          {isService && (
+            <Tabs.Panel id="calendar" className="pt-6">
+              <Card>
+                <Card.Header>
+                  <Card.Title>Calendar</Card.Title>
+                  <Card.Description>
+                    Your booked days and availability will show up here.
+                  </Card.Description>
+                </Card.Header>
+                <Card.Content>
+                  <EmptyState className="flex flex-col items-center gap-2 py-8 text-center">
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth={1.5}
+                      className="h-8 w-8 text-muted"
+                    >
+                      {calendarIcon}
+                    </svg>
+                    <Typography.Paragraph size="sm" className="text-muted">
+                      No availability set up yet
+                    </Typography.Paragraph>
+                  </EmptyState>
+                </Card.Content>
+              </Card>
+            </Tabs.Panel>
+          )}
+
+          {!isService && (
+            <Tabs.Panel id="orders" className="flex flex-col gap-6 pt-6">
+              <OrdersTable
+                orders={business.orders.map((order) => ({
+                  ...order,
+                  items: order.items.map((item) => ({
+                    ...item,
+                    product: item.product
+                      ? {
+                          ...item.product,
+                          price: item.product.price
+                            ? Number(item.product.price)
+                            : null,
+                        }
+                      : null,
+                  })),
+                }))}
+              />
+
+              <AddOrderForm
+                products={business.products.map((product) => ({
+                  ...product,
+                  price: product.price ? Number(product.price) : null,
+                }))}
+              />
+            </Tabs.Panel>
+          )}
+
+          <Tabs.Panel id="messages" className="pt-6">
+            <Card>
+              <Card.Header>
+                <Card.Title>Messages</Card.Title>
+                <Card.Description>
+                  Customer inquiries sent through your page.
+                </Card.Description>
+              </Card.Header>
+              <Card.Content>
+                {business.messages.length > 0 ? (
                   <ul className="flex flex-col gap-3">
-                    {business.appointments.map((appointment) => (
+                    {business.messages.map((message) => (
                       <li
-                        key={appointment.id}
+                        key={message.id}
                         className="rounded-lg border border-border p-3 text-sm"
                       >
                         <p className="font-medium text-foreground">
-                          {appointment.customerName} ·{" "}
-                          {appointment.requestedAt.toLocaleString(undefined, {
+                          {message.contact_email}
+                        </p>
+                        <p className="mt-1 text-muted">{message.body}</p>
+                        <p className="mt-1 text-xs text-muted">
+                          {message.createdAt.toLocaleString(undefined, {
                             dateStyle: "medium",
                             timeStyle: "short",
                           })}
                         </p>
-                        <p className="text-muted">{appointment.customerEmail}</p>
-                        {appointment.notes && (
-                          <p className="mt-1 text-muted">{appointment.notes}</p>
-                        )}
                       </li>
                     ))}
                   </ul>
@@ -143,156 +199,53 @@ export function PublishedDashboard({
                       strokeWidth={1.5}
                       className="h-8 w-8 text-muted"
                     >
-                      {clockIcon}
+                      {messageIcon}
                     </svg>
                     <Typography.Paragraph size="sm" className="text-muted">
-                      No upcoming appointments
+                      No messages yet
                     </Typography.Paragraph>
                   </EmptyState>
                 )}
               </Card.Content>
             </Card>
-          )}
+          </Tabs.Panel>
 
-          {!isService && (
+          <Tabs.Panel id={catalogTabId} className="pt-6">
+            {isService ? (
+              <PhotosSection photos={business.photos} />
+            ) : (
+              <ProductsSection
+                products={business.products.map((product) => ({
+                  ...product,
+                  price: product.price ? Number(product.price) : null,
+                }))}
+              />
+            )}
+          </Tabs.Panel>
+
+          <Tabs.Panel id="customers" className="pt-6">
+            <CustomersSection customers={business.customers} />
+          </Tabs.Panel>
+
+          <Tabs.Panel id="settings" className="pt-6">
             <Card>
               <Card.Header>
-                <Card.Title>Orders</Card.Title>
+                <Card.Title>Business settings</Card.Title>
                 <Card.Description>
-                  Orders requested through your page.
+                  Edit your business info, contact details, and business type.
                 </Card.Description>
               </Card.Header>
-              <Card.Content>
-                {business.orders.length > 0 ? (
-                  <ul className="flex flex-col gap-3">
-                    {business.orders.map((order) => (
-                      <li
-                        key={order.id}
-                        className="rounded-lg border border-border p-3 text-sm"
-                      >
-                        <p className="font-medium text-foreground">{order.customerName}</p>
-                        <p className="text-muted">{order.customerEmail}</p>
-                        <ul className="mt-1 list-inside list-disc text-muted">
-                          {order.items.map((item) => (
-                            <li key={item.id}>
-                              {item.product?.title ?? item.description} × {item.quantity}
-                            </li>
-                          ))}
-                        </ul>
-                        {order.notes && <p className="mt-1 text-muted">{order.notes}</p>}
-                      </li>
-                    ))}
-                  </ul>
-                ) : (
-                  <EmptyState className="flex flex-col items-center gap-2 py-8 text-center">
-                    <svg
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth={1.5}
-                      className="h-8 w-8 text-muted"
-                    >
-                      {boxIcon}
-                    </svg>
-                    <Typography.Paragraph size="sm" className="text-muted">
-                      No orders yet
-                    </Typography.Paragraph>
-                  </EmptyState>
-                )}
-              </Card.Content>
+              <Card.Footer>
+                <Link
+                  href="/dashboard/settings"
+                  className={buttonVariants({ size: "sm" })}
+                >
+                  Edit business info
+                </Link>
+              </Card.Footer>
             </Card>
-          )}
-
-          <Card>
-            <Card.Header>
-              <Card.Title>Messages</Card.Title>
-              <Card.Description>
-                Customer inquiries sent through your page.
-              </Card.Description>
-            </Card.Header>
-            <Card.Content>
-              {business.messages.length > 0 ? (
-                <ul className="flex flex-col gap-3">
-                  {business.messages.map((message) => (
-                    <li
-                      key={message.id}
-                      className="rounded-lg border border-border p-3 text-sm"
-                    >
-                      <p className="font-medium text-foreground">
-                        {message.contact_email}
-                      </p>
-                      <p className="mt-1 text-muted">{message.body}</p>
-                      <p className="mt-1 text-xs text-muted">
-                        {message.createdAt.toLocaleString(undefined, {
-                          dateStyle: "medium",
-                          timeStyle: "short",
-                        })}
-                      </p>
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <EmptyState className="flex flex-col items-center gap-2 py-8 text-center">
-                  <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth={1.5}
-                    className="h-8 w-8 text-muted"
-                  >
-                    {messageIcon}
-                  </svg>
-                  <Typography.Paragraph size="sm" className="text-muted">
-                    No messages yet
-                  </Typography.Paragraph>
-                </EmptyState>
-              )}
-            </Card.Content>
-          </Card>
-
-          {sections.map((section) => (
-            <Card key={section.title}>
-              <Card.Header>
-                <Card.Title>{section.title}</Card.Title>
-                <Card.Description>{section.description}</Card.Description>
-              </Card.Header>
-              <Card.Content>
-                <EmptyState className="flex flex-col items-center gap-2 py-8 text-center">
-                  <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth={1.5}
-                    className="h-8 w-8 text-muted"
-                  >
-                    {section.icon}
-                  </svg>
-                  <Typography.Paragraph size="sm" className="text-muted">
-                    {section.empty}
-                  </Typography.Paragraph>
-                </EmptyState>
-              </Card.Content>
-            </Card>
-          ))}
-        </div>
-
-        {!isService && <ProductsSection products={business.products} />}
-
-        {isService && <PhotosSection photos={business.photos} />}
-
-        <Card>
-          <Card.Header>
-            <Card.Title>Business settings</Card.Title>
-            <Card.Description>
-              Edit your business info, contact details, and business type.
-            </Card.Description>
-          </Card.Header>
-          <Card.Footer>
-            <Link href="/dashboard/settings" className={buttonVariants({ size: "sm" })}>
-              Edit business info
-            </Link>
-          </Card.Footer>
-        </Card>
+          </Tabs.Panel>
+        </Tabs>
       </div>
     </div>
   );

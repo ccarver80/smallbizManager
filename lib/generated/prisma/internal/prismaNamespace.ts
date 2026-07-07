@@ -393,7 +393,9 @@ export const ModelName = {
   Review: 'Review',
   Photo: 'Photo',
   Appointment: 'Appointment',
+  AppointmentNote: 'AppointmentNote',
   Order: 'Order',
+  OrderNote: 'OrderNote',
   OrderItem: 'OrderItem'
 } as const
 
@@ -410,7 +412,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "plans" | "business" | "customer" | "message" | "product" | "review" | "photo" | "appointment" | "order" | "orderItem"
+    modelProps: "user" | "plans" | "business" | "customer" | "message" | "product" | "review" | "photo" | "appointment" | "appointmentNote" | "order" | "orderNote" | "orderItem"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1080,6 +1082,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    AppointmentNote: {
+      payload: Prisma.$AppointmentNotePayload<ExtArgs>
+      fields: Prisma.AppointmentNoteFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.AppointmentNoteFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AppointmentNotePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.AppointmentNoteFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AppointmentNotePayload>
+        }
+        findFirst: {
+          args: Prisma.AppointmentNoteFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AppointmentNotePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.AppointmentNoteFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AppointmentNotePayload>
+        }
+        findMany: {
+          args: Prisma.AppointmentNoteFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AppointmentNotePayload>[]
+        }
+        create: {
+          args: Prisma.AppointmentNoteCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AppointmentNotePayload>
+        }
+        createMany: {
+          args: Prisma.AppointmentNoteCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.AppointmentNoteCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AppointmentNotePayload>[]
+        }
+        delete: {
+          args: Prisma.AppointmentNoteDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AppointmentNotePayload>
+        }
+        update: {
+          args: Prisma.AppointmentNoteUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AppointmentNotePayload>
+        }
+        deleteMany: {
+          args: Prisma.AppointmentNoteDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.AppointmentNoteUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.AppointmentNoteUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AppointmentNotePayload>[]
+        }
+        upsert: {
+          args: Prisma.AppointmentNoteUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AppointmentNotePayload>
+        }
+        aggregate: {
+          args: Prisma.AppointmentNoteAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateAppointmentNote>
+        }
+        groupBy: {
+          args: Prisma.AppointmentNoteGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AppointmentNoteGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.AppointmentNoteCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AppointmentNoteCountAggregateOutputType> | number
+        }
+      }
+    }
     Order: {
       payload: Prisma.$OrderPayload<ExtArgs>
       fields: Prisma.OrderFieldRefs
@@ -1151,6 +1227,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.OrderCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.OrderCountAggregateOutputType> | number
+        }
+      }
+    }
+    OrderNote: {
+      payload: Prisma.$OrderNotePayload<ExtArgs>
+      fields: Prisma.OrderNoteFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.OrderNoteFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrderNotePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.OrderNoteFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrderNotePayload>
+        }
+        findFirst: {
+          args: Prisma.OrderNoteFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrderNotePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.OrderNoteFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrderNotePayload>
+        }
+        findMany: {
+          args: Prisma.OrderNoteFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrderNotePayload>[]
+        }
+        create: {
+          args: Prisma.OrderNoteCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrderNotePayload>
+        }
+        createMany: {
+          args: Prisma.OrderNoteCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.OrderNoteCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrderNotePayload>[]
+        }
+        delete: {
+          args: Prisma.OrderNoteDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrderNotePayload>
+        }
+        update: {
+          args: Prisma.OrderNoteUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrderNotePayload>
+        }
+        deleteMany: {
+          args: Prisma.OrderNoteDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.OrderNoteUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.OrderNoteUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrderNotePayload>[]
+        }
+        upsert: {
+          args: Prisma.OrderNoteUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrderNotePayload>
+        }
+        aggregate: {
+          args: Prisma.OrderNoteAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateOrderNote>
+        }
+        groupBy: {
+          args: Prisma.OrderNoteGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.OrderNoteGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.OrderNoteCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.OrderNoteCountAggregateOutputType> | number
         }
       }
     }
@@ -1392,6 +1542,16 @@ export const AppointmentScalarFieldEnum = {
 export type AppointmentScalarFieldEnum = (typeof AppointmentScalarFieldEnum)[keyof typeof AppointmentScalarFieldEnum]
 
 
+export const AppointmentNoteScalarFieldEnum = {
+  id: 'id',
+  appointmentId: 'appointmentId',
+  note: 'note',
+  createdAt: 'createdAt'
+} as const
+
+export type AppointmentNoteScalarFieldEnum = (typeof AppointmentNoteScalarFieldEnum)[keyof typeof AppointmentNoteScalarFieldEnum]
+
+
 export const OrderScalarFieldEnum = {
   id: 'id',
   businessId: 'businessId',
@@ -1399,11 +1559,22 @@ export const OrderScalarFieldEnum = {
   customerEmail: 'customerEmail',
   customerPhone: 'customerPhone',
   notes: 'notes',
+  paid: 'paid',
   status: 'status',
   createdAt: 'createdAt'
 } as const
 
 export type OrderScalarFieldEnum = (typeof OrderScalarFieldEnum)[keyof typeof OrderScalarFieldEnum]
+
+
+export const OrderNoteScalarFieldEnum = {
+  id: 'id',
+  orderId: 'orderId',
+  note: 'note',
+  createdAt: 'createdAt'
+} as const
+
+export type OrderNoteScalarFieldEnum = (typeof OrderNoteScalarFieldEnum)[keyof typeof OrderNoteScalarFieldEnum]
 
 
 export const OrderItemScalarFieldEnum = {
@@ -1684,7 +1855,9 @@ export type GlobalOmitConfig = {
   review?: Prisma.ReviewOmit
   photo?: Prisma.PhotoOmit
   appointment?: Prisma.AppointmentOmit
+  appointmentNote?: Prisma.AppointmentNoteOmit
   order?: Prisma.OrderOmit
+  orderNote?: Prisma.OrderNoteOmit
   orderItem?: Prisma.OrderItemOmit
 }
 

@@ -60,7 +60,9 @@ export const ModelName = {
   Review: 'Review',
   Photo: 'Photo',
   Appointment: 'Appointment',
+  AppointmentNote: 'AppointmentNote',
   Order: 'Order',
+  OrderNote: 'OrderNote',
   OrderItem: 'OrderItem'
 } as const
 
@@ -205,6 +207,16 @@ export const AppointmentScalarFieldEnum = {
 export type AppointmentScalarFieldEnum = (typeof AppointmentScalarFieldEnum)[keyof typeof AppointmentScalarFieldEnum]
 
 
+export const AppointmentNoteScalarFieldEnum = {
+  id: 'id',
+  appointmentId: 'appointmentId',
+  note: 'note',
+  createdAt: 'createdAt'
+} as const
+
+export type AppointmentNoteScalarFieldEnum = (typeof AppointmentNoteScalarFieldEnum)[keyof typeof AppointmentNoteScalarFieldEnum]
+
+
 export const OrderScalarFieldEnum = {
   id: 'id',
   businessId: 'businessId',
@@ -212,11 +224,22 @@ export const OrderScalarFieldEnum = {
   customerEmail: 'customerEmail',
   customerPhone: 'customerPhone',
   notes: 'notes',
+  paid: 'paid',
   status: 'status',
   createdAt: 'createdAt'
 } as const
 
 export type OrderScalarFieldEnum = (typeof OrderScalarFieldEnum)[keyof typeof OrderScalarFieldEnum]
+
+
+export const OrderNoteScalarFieldEnum = {
+  id: 'id',
+  orderId: 'orderId',
+  note: 'note',
+  createdAt: 'createdAt'
+} as const
+
+export type OrderNoteScalarFieldEnum = (typeof OrderNoteScalarFieldEnum)[keyof typeof OrderNoteScalarFieldEnum]
 
 
 export const OrderItemScalarFieldEnum = {
