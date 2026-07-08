@@ -63,6 +63,7 @@ model Business {
   product_service      Boolean        @default(false)
   message_service      Boolean        @default(true)
   event_service        Boolean        @default(false)
+  gallery_service      Boolean        @default(false)
   products             Product[]
   reviews              Review[]
   users                User[]

@@ -154,6 +154,7 @@ export async function updateServices(
       product_service: formData.get("product_service") === "on",
       message_service: formData.get("message_service") === "on",
       event_service: formData.get("event_service") === "on",
+      gallery_service: formData.get("gallery_service") === "on",
     },
   });
 

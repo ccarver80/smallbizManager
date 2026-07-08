@@ -35,6 +35,12 @@ const SERVICES = [
     description: "Promote vendor shows, craft fairs, and pop-ups",
     icon: "📍",
   },
+  {
+    name: "gallery_service" as const,
+    label: "Photo Gallery",
+    description: "Show a browsable photo gallery on your page",
+    icon: "🖼️",
+  },
 ];
 
 type ServiceKey =
@@ -42,7 +48,8 @@ type ServiceKey =
   | "quote_service"
   | "product_service"
   | "message_service"
-  | "event_service";
+  | "event_service"
+  | "gallery_service";
 
 export function AddServiceModal({
   services,

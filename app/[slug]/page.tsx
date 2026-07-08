@@ -39,6 +39,7 @@ export default async function BusinessPage({ params }: Props) {
   const isQuote = business.quote_service;
   const isProduct = business.product_service;
   const isEvent = business.event_service;
+  const isGallery = business.gallery_service;
 
   return (
     <div className="flex flex-1 flex-col">
@@ -49,7 +50,7 @@ export default async function BusinessPage({ params }: Props) {
           </span>
           <nav className="hidden items-center gap-6 text-sm sm:flex">
             {business.aboutText && <HeroLink href="#about">About</HeroLink>}
-            {(isAppointment || isQuote) && business.photos.length > 0 && (
+            {(isAppointment || isQuote || isGallery) && business.photos.length > 0 && (
               <HeroLink href="#gallery">Gallery</HeroLink>
             )}
             {isAppointment && <HeroLink href="#booking">Book now</HeroLink>}
@@ -136,8 +137,8 @@ export default async function BusinessPage({ params }: Props) {
           </section>
         )}
 
-        {/* Gallery — appointment & quote businesses */}
-        {(isAppointment || isQuote) && (
+        {/* Gallery */}
+        {(isAppointment || isQuote || isGallery) && (
           <GallerySection photos={business.photos} businessName={business.name} />
         )}
 

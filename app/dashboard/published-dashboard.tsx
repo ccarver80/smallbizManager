@@ -75,8 +75,7 @@ export function PublishedDashboard({
   const isQuote = business.quote_service;
   const isProduct = business.product_service;
   const isEvent = business.event_service;
-
-  const catalogTabId = isProduct ? "products" : "photos";
+  const isGallery = business.gallery_service;
 
   return (
     <div className="flex flex-1 flex-col bg-surface-secondary px-6 py-12">
@@ -90,6 +89,7 @@ export function PublishedDashboard({
             product_service: business.product_service,
             message_service: business.message_service,
             event_service: business.event_service,
+            gallery_service: business.gallery_service,
           }}
         />
 
@@ -103,9 +103,8 @@ export function PublishedDashboard({
               {isProduct && <Tabs.Tab id="orders">Orders</Tabs.Tab>}
               <Tabs.Tab id="messages">Messages</Tabs.Tab>
               {isEvent && <Tabs.Tab id="events">Events</Tabs.Tab>}
-              <Tabs.Tab id={catalogTabId}>
-                {isProduct ? "Products" : "Photos"}
-              </Tabs.Tab>
+              {isProduct && <Tabs.Tab id="products">Products</Tabs.Tab>}
+              {isGallery && <Tabs.Tab id="photos">Gallery</Tabs.Tab>}
               <Tabs.Tab id="customers">Customers</Tabs.Tab>
               <Tabs.Tab id="settings">Settings</Tabs.Tab>
             </Tabs.List>
@@ -308,18 +307,22 @@ export function PublishedDashboard({
             </Card>
           </Tabs.Panel>
 
-          <Tabs.Panel id={catalogTabId} className="pt-6">
-            {isProduct ? (
+          {isProduct && (
+            <Tabs.Panel id="products" className="pt-6">
               <ProductsSection
                 products={business.products.map((product) => ({
                   ...product,
                   price: product.price ? Number(product.price) : null,
                 }))}
               />
-            ) : (
+            </Tabs.Panel>
+          )}
+
+          {isGallery && (
+            <Tabs.Panel id="photos" className="pt-6">
               <PhotosSection photos={business.photos} />
-            )}
-          </Tabs.Panel>
+            </Tabs.Panel>
+          )}
 
           <Tabs.Panel id="customers" className="pt-6">
             <CustomersSection customers={business.customers} />

@@ -51,6 +51,7 @@ export type BusinessMinAggregateOutputType = {
   product_service: boolean | null
   message_service: boolean | null
   event_service: boolean | null
+  gallery_service: boolean | null
   page_views: number | null
 }
 
@@ -71,6 +72,7 @@ export type BusinessMaxAggregateOutputType = {
   product_service: boolean | null
   message_service: boolean | null
   event_service: boolean | null
+  gallery_service: boolean | null
   page_views: number | null
 }
 
@@ -91,6 +93,7 @@ export type BusinessCountAggregateOutputType = {
   product_service: number
   message_service: number
   event_service: number
+  gallery_service: number
   page_views: number
   _all: number
 }
@@ -121,6 +124,7 @@ export type BusinessMinAggregateInputType = {
   product_service?: true
   message_service?: true
   event_service?: true
+  gallery_service?: true
   page_views?: true
 }
 
@@ -141,6 +145,7 @@ export type BusinessMaxAggregateInputType = {
   product_service?: true
   message_service?: true
   event_service?: true
+  gallery_service?: true
   page_views?: true
 }
 
@@ -161,6 +166,7 @@ export type BusinessCountAggregateInputType = {
   product_service?: true
   message_service?: true
   event_service?: true
+  gallery_service?: true
   page_views?: true
   _all?: true
 }
@@ -268,6 +274,7 @@ export type BusinessGroupByOutputType = {
   product_service: boolean
   message_service: boolean
   event_service: boolean
+  gallery_service: boolean
   page_views: number
   _count: BusinessCountAggregateOutputType | null
   _avg: BusinessAvgAggregateOutputType | null
@@ -311,6 +318,7 @@ export type BusinessWhereInput = {
   product_service?: Prisma.BoolFilter<"Business"> | boolean
   message_service?: Prisma.BoolFilter<"Business"> | boolean
   event_service?: Prisma.BoolFilter<"Business"> | boolean
+  gallery_service?: Prisma.BoolFilter<"Business"> | boolean
   page_views?: Prisma.IntFilter<"Business"> | number
   products?: Prisma.ProductListRelationFilter
   reviews?: Prisma.ReviewListRelationFilter
@@ -341,6 +349,7 @@ export type BusinessOrderByWithRelationInput = {
   product_service?: Prisma.SortOrder
   message_service?: Prisma.SortOrder
   event_service?: Prisma.SortOrder
+  gallery_service?: Prisma.SortOrder
   page_views?: Prisma.SortOrder
   products?: Prisma.ProductOrderByRelationAggregateInput
   reviews?: Prisma.ReviewOrderByRelationAggregateInput
@@ -374,6 +383,7 @@ export type BusinessWhereUniqueInput = Prisma.AtLeast<{
   product_service?: Prisma.BoolFilter<"Business"> | boolean
   message_service?: Prisma.BoolFilter<"Business"> | boolean
   event_service?: Prisma.BoolFilter<"Business"> | boolean
+  gallery_service?: Prisma.BoolFilter<"Business"> | boolean
   page_views?: Prisma.IntFilter<"Business"> | number
   products?: Prisma.ProductListRelationFilter
   reviews?: Prisma.ReviewListRelationFilter
@@ -404,6 +414,7 @@ export type BusinessOrderByWithAggregationInput = {
   product_service?: Prisma.SortOrder
   message_service?: Prisma.SortOrder
   event_service?: Prisma.SortOrder
+  gallery_service?: Prisma.SortOrder
   page_views?: Prisma.SortOrder
   _count?: Prisma.BusinessCountOrderByAggregateInput
   _avg?: Prisma.BusinessAvgOrderByAggregateInput
@@ -432,6 +443,7 @@ export type BusinessScalarWhereWithAggregatesInput = {
   product_service?: Prisma.BoolWithAggregatesFilter<"Business"> | boolean
   message_service?: Prisma.BoolWithAggregatesFilter<"Business"> | boolean
   event_service?: Prisma.BoolWithAggregatesFilter<"Business"> | boolean
+  gallery_service?: Prisma.BoolWithAggregatesFilter<"Business"> | boolean
   page_views?: Prisma.IntWithAggregatesFilter<"Business"> | number
 }
 
@@ -452,6 +464,7 @@ export type BusinessCreateInput = {
   product_service?: boolean
   message_service?: boolean
   event_service?: boolean
+  gallery_service?: boolean
   page_views?: number
   products?: Prisma.ProductCreateNestedManyWithoutBusinessInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutBusinessInput
@@ -482,6 +495,7 @@ export type BusinessUncheckedCreateInput = {
   product_service?: boolean
   message_service?: boolean
   event_service?: boolean
+  gallery_service?: boolean
   page_views?: number
   products?: Prisma.ProductUncheckedCreateNestedManyWithoutBusinessInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutBusinessInput
@@ -512,6 +526,7 @@ export type BusinessUpdateInput = {
   product_service?: Prisma.BoolFieldUpdateOperationsInput | boolean
   message_service?: Prisma.BoolFieldUpdateOperationsInput | boolean
   event_service?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  gallery_service?: Prisma.BoolFieldUpdateOperationsInput | boolean
   page_views?: Prisma.IntFieldUpdateOperationsInput | number
   products?: Prisma.ProductUpdateManyWithoutBusinessNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutBusinessNestedInput
@@ -542,6 +557,7 @@ export type BusinessUncheckedUpdateInput = {
   product_service?: Prisma.BoolFieldUpdateOperationsInput | boolean
   message_service?: Prisma.BoolFieldUpdateOperationsInput | boolean
   event_service?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  gallery_service?: Prisma.BoolFieldUpdateOperationsInput | boolean
   page_views?: Prisma.IntFieldUpdateOperationsInput | number
   products?: Prisma.ProductUncheckedUpdateManyWithoutBusinessNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutBusinessNestedInput
@@ -572,6 +588,7 @@ export type BusinessCreateManyInput = {
   product_service?: boolean
   message_service?: boolean
   event_service?: boolean
+  gallery_service?: boolean
   page_views?: number
 }
 
@@ -592,6 +609,7 @@ export type BusinessUpdateManyMutationInput = {
   product_service?: Prisma.BoolFieldUpdateOperationsInput | boolean
   message_service?: Prisma.BoolFieldUpdateOperationsInput | boolean
   event_service?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  gallery_service?: Prisma.BoolFieldUpdateOperationsInput | boolean
   page_views?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
@@ -612,6 +630,7 @@ export type BusinessUncheckedUpdateManyInput = {
   product_service?: Prisma.BoolFieldUpdateOperationsInput | boolean
   message_service?: Prisma.BoolFieldUpdateOperationsInput | boolean
   event_service?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  gallery_service?: Prisma.BoolFieldUpdateOperationsInput | boolean
   page_views?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
@@ -637,6 +656,7 @@ export type BusinessCountOrderByAggregateInput = {
   product_service?: Prisma.SortOrder
   message_service?: Prisma.SortOrder
   event_service?: Prisma.SortOrder
+  gallery_service?: Prisma.SortOrder
   page_views?: Prisma.SortOrder
 }
 
@@ -661,6 +681,7 @@ export type BusinessMaxOrderByAggregateInput = {
   product_service?: Prisma.SortOrder
   message_service?: Prisma.SortOrder
   event_service?: Prisma.SortOrder
+  gallery_service?: Prisma.SortOrder
   page_views?: Prisma.SortOrder
 }
 
@@ -681,6 +702,7 @@ export type BusinessMinOrderByAggregateInput = {
   product_service?: Prisma.SortOrder
   message_service?: Prisma.SortOrder
   event_service?: Prisma.SortOrder
+  gallery_service?: Prisma.SortOrder
   page_views?: Prisma.SortOrder
 }
 
@@ -857,6 +879,7 @@ export type BusinessCreateWithoutUsersInput = {
   product_service?: boolean
   message_service?: boolean
   event_service?: boolean
+  gallery_service?: boolean
   page_views?: number
   products?: Prisma.ProductCreateNestedManyWithoutBusinessInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutBusinessInput
@@ -886,6 +909,7 @@ export type BusinessUncheckedCreateWithoutUsersInput = {
   product_service?: boolean
   message_service?: boolean
   event_service?: boolean
+  gallery_service?: boolean
   page_views?: number
   products?: Prisma.ProductUncheckedCreateNestedManyWithoutBusinessInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutBusinessInput
@@ -931,6 +955,7 @@ export type BusinessUpdateWithoutUsersInput = {
   product_service?: Prisma.BoolFieldUpdateOperationsInput | boolean
   message_service?: Prisma.BoolFieldUpdateOperationsInput | boolean
   event_service?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  gallery_service?: Prisma.BoolFieldUpdateOperationsInput | boolean
   page_views?: Prisma.IntFieldUpdateOperationsInput | number
   products?: Prisma.ProductUpdateManyWithoutBusinessNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutBusinessNestedInput
@@ -960,6 +985,7 @@ export type BusinessUncheckedUpdateWithoutUsersInput = {
   product_service?: Prisma.BoolFieldUpdateOperationsInput | boolean
   message_service?: Prisma.BoolFieldUpdateOperationsInput | boolean
   event_service?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  gallery_service?: Prisma.BoolFieldUpdateOperationsInput | boolean
   page_views?: Prisma.IntFieldUpdateOperationsInput | number
   products?: Prisma.ProductUncheckedUpdateManyWithoutBusinessNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutBusinessNestedInput
@@ -989,6 +1015,7 @@ export type BusinessCreateWithoutCustomersInput = {
   product_service?: boolean
   message_service?: boolean
   event_service?: boolean
+  gallery_service?: boolean
   page_views?: number
   products?: Prisma.ProductCreateNestedManyWithoutBusinessInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutBusinessInput
@@ -1018,6 +1045,7 @@ export type BusinessUncheckedCreateWithoutCustomersInput = {
   product_service?: boolean
   message_service?: boolean
   event_service?: boolean
+  gallery_service?: boolean
   page_views?: number
   products?: Prisma.ProductUncheckedCreateNestedManyWithoutBusinessInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutBusinessInput
@@ -1063,6 +1091,7 @@ export type BusinessUpdateWithoutCustomersInput = {
   product_service?: Prisma.BoolFieldUpdateOperationsInput | boolean
   message_service?: Prisma.BoolFieldUpdateOperationsInput | boolean
   event_service?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  gallery_service?: Prisma.BoolFieldUpdateOperationsInput | boolean
   page_views?: Prisma.IntFieldUpdateOperationsInput | number
   products?: Prisma.ProductUpdateManyWithoutBusinessNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutBusinessNestedInput
@@ -1092,6 +1121,7 @@ export type BusinessUncheckedUpdateWithoutCustomersInput = {
   product_service?: Prisma.BoolFieldUpdateOperationsInput | boolean
   message_service?: Prisma.BoolFieldUpdateOperationsInput | boolean
   event_service?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  gallery_service?: Prisma.BoolFieldUpdateOperationsInput | boolean
   page_views?: Prisma.IntFieldUpdateOperationsInput | number
   products?: Prisma.ProductUncheckedUpdateManyWithoutBusinessNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutBusinessNestedInput
@@ -1121,6 +1151,7 @@ export type BusinessCreateWithoutMessagesInput = {
   product_service?: boolean
   message_service?: boolean
   event_service?: boolean
+  gallery_service?: boolean
   page_views?: number
   products?: Prisma.ProductCreateNestedManyWithoutBusinessInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutBusinessInput
@@ -1150,6 +1181,7 @@ export type BusinessUncheckedCreateWithoutMessagesInput = {
   product_service?: boolean
   message_service?: boolean
   event_service?: boolean
+  gallery_service?: boolean
   page_views?: number
   products?: Prisma.ProductUncheckedCreateNestedManyWithoutBusinessInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutBusinessInput
@@ -1195,6 +1227,7 @@ export type BusinessUpdateWithoutMessagesInput = {
   product_service?: Prisma.BoolFieldUpdateOperationsInput | boolean
   message_service?: Prisma.BoolFieldUpdateOperationsInput | boolean
   event_service?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  gallery_service?: Prisma.BoolFieldUpdateOperationsInput | boolean
   page_views?: Prisma.IntFieldUpdateOperationsInput | number
   products?: Prisma.ProductUpdateManyWithoutBusinessNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutBusinessNestedInput
@@ -1224,6 +1257,7 @@ export type BusinessUncheckedUpdateWithoutMessagesInput = {
   product_service?: Prisma.BoolFieldUpdateOperationsInput | boolean
   message_service?: Prisma.BoolFieldUpdateOperationsInput | boolean
   event_service?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  gallery_service?: Prisma.BoolFieldUpdateOperationsInput | boolean
   page_views?: Prisma.IntFieldUpdateOperationsInput | number
   products?: Prisma.ProductUncheckedUpdateManyWithoutBusinessNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutBusinessNestedInput
@@ -1253,6 +1287,7 @@ export type BusinessCreateWithoutProductsInput = {
   product_service?: boolean
   message_service?: boolean
   event_service?: boolean
+  gallery_service?: boolean
   page_views?: number
   reviews?: Prisma.ReviewCreateNestedManyWithoutBusinessInput
   users?: Prisma.UserCreateNestedManyWithoutBusinessInput
@@ -1282,6 +1317,7 @@ export type BusinessUncheckedCreateWithoutProductsInput = {
   product_service?: boolean
   message_service?: boolean
   event_service?: boolean
+  gallery_service?: boolean
   page_views?: number
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutBusinessInput
   users?: Prisma.UserUncheckedCreateNestedManyWithoutBusinessInput
@@ -1327,6 +1363,7 @@ export type BusinessUpdateWithoutProductsInput = {
   product_service?: Prisma.BoolFieldUpdateOperationsInput | boolean
   message_service?: Prisma.BoolFieldUpdateOperationsInput | boolean
   event_service?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  gallery_service?: Prisma.BoolFieldUpdateOperationsInput | boolean
   page_views?: Prisma.IntFieldUpdateOperationsInput | number
   reviews?: Prisma.ReviewUpdateManyWithoutBusinessNestedInput
   users?: Prisma.UserUpdateManyWithoutBusinessNestedInput
@@ -1356,6 +1393,7 @@ export type BusinessUncheckedUpdateWithoutProductsInput = {
   product_service?: Prisma.BoolFieldUpdateOperationsInput | boolean
   message_service?: Prisma.BoolFieldUpdateOperationsInput | boolean
   event_service?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  gallery_service?: Prisma.BoolFieldUpdateOperationsInput | boolean
   page_views?: Prisma.IntFieldUpdateOperationsInput | number
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutBusinessNestedInput
   users?: Prisma.UserUncheckedUpdateManyWithoutBusinessNestedInput
@@ -1385,6 +1423,7 @@ export type BusinessCreateWithoutReviewsInput = {
   product_service?: boolean
   message_service?: boolean
   event_service?: boolean
+  gallery_service?: boolean
   page_views?: number
   products?: Prisma.ProductCreateNestedManyWithoutBusinessInput
   users?: Prisma.UserCreateNestedManyWithoutBusinessInput
@@ -1414,6 +1453,7 @@ export type BusinessUncheckedCreateWithoutReviewsInput = {
   product_service?: boolean
   message_service?: boolean
   event_service?: boolean
+  gallery_service?: boolean
   page_views?: number
   products?: Prisma.ProductUncheckedCreateNestedManyWithoutBusinessInput
   users?: Prisma.UserUncheckedCreateNestedManyWithoutBusinessInput
@@ -1459,6 +1499,7 @@ export type BusinessUpdateWithoutReviewsInput = {
   product_service?: Prisma.BoolFieldUpdateOperationsInput | boolean
   message_service?: Prisma.BoolFieldUpdateOperationsInput | boolean
   event_service?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  gallery_service?: Prisma.BoolFieldUpdateOperationsInput | boolean
   page_views?: Prisma.IntFieldUpdateOperationsInput | number
   products?: Prisma.ProductUpdateManyWithoutBusinessNestedInput
   users?: Prisma.UserUpdateManyWithoutBusinessNestedInput
@@ -1488,6 +1529,7 @@ export type BusinessUncheckedUpdateWithoutReviewsInput = {
   product_service?: Prisma.BoolFieldUpdateOperationsInput | boolean
   message_service?: Prisma.BoolFieldUpdateOperationsInput | boolean
   event_service?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  gallery_service?: Prisma.BoolFieldUpdateOperationsInput | boolean
   page_views?: Prisma.IntFieldUpdateOperationsInput | number
   products?: Prisma.ProductUncheckedUpdateManyWithoutBusinessNestedInput
   users?: Prisma.UserUncheckedUpdateManyWithoutBusinessNestedInput
@@ -1517,6 +1559,7 @@ export type BusinessCreateWithoutPhotosInput = {
   product_service?: boolean
   message_service?: boolean
   event_service?: boolean
+  gallery_service?: boolean
   page_views?: number
   products?: Prisma.ProductCreateNestedManyWithoutBusinessInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutBusinessInput
@@ -1546,6 +1589,7 @@ export type BusinessUncheckedCreateWithoutPhotosInput = {
   product_service?: boolean
   message_service?: boolean
   event_service?: boolean
+  gallery_service?: boolean
   page_views?: number
   products?: Prisma.ProductUncheckedCreateNestedManyWithoutBusinessInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutBusinessInput
@@ -1591,6 +1635,7 @@ export type BusinessUpdateWithoutPhotosInput = {
   product_service?: Prisma.BoolFieldUpdateOperationsInput | boolean
   message_service?: Prisma.BoolFieldUpdateOperationsInput | boolean
   event_service?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  gallery_service?: Prisma.BoolFieldUpdateOperationsInput | boolean
   page_views?: Prisma.IntFieldUpdateOperationsInput | number
   products?: Prisma.ProductUpdateManyWithoutBusinessNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutBusinessNestedInput
@@ -1620,6 +1665,7 @@ export type BusinessUncheckedUpdateWithoutPhotosInput = {
   product_service?: Prisma.BoolFieldUpdateOperationsInput | boolean
   message_service?: Prisma.BoolFieldUpdateOperationsInput | boolean
   event_service?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  gallery_service?: Prisma.BoolFieldUpdateOperationsInput | boolean
   page_views?: Prisma.IntFieldUpdateOperationsInput | number
   products?: Prisma.ProductUncheckedUpdateManyWithoutBusinessNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutBusinessNestedInput
@@ -1649,6 +1695,7 @@ export type BusinessCreateWithoutAppointmentsInput = {
   product_service?: boolean
   message_service?: boolean
   event_service?: boolean
+  gallery_service?: boolean
   page_views?: number
   products?: Prisma.ProductCreateNestedManyWithoutBusinessInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutBusinessInput
@@ -1678,6 +1725,7 @@ export type BusinessUncheckedCreateWithoutAppointmentsInput = {
   product_service?: boolean
   message_service?: boolean
   event_service?: boolean
+  gallery_service?: boolean
   page_views?: number
   products?: Prisma.ProductUncheckedCreateNestedManyWithoutBusinessInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutBusinessInput
@@ -1723,6 +1771,7 @@ export type BusinessUpdateWithoutAppointmentsInput = {
   product_service?: Prisma.BoolFieldUpdateOperationsInput | boolean
   message_service?: Prisma.BoolFieldUpdateOperationsInput | boolean
   event_service?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  gallery_service?: Prisma.BoolFieldUpdateOperationsInput | boolean
   page_views?: Prisma.IntFieldUpdateOperationsInput | number
   products?: Prisma.ProductUpdateManyWithoutBusinessNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutBusinessNestedInput
@@ -1752,6 +1801,7 @@ export type BusinessUncheckedUpdateWithoutAppointmentsInput = {
   product_service?: Prisma.BoolFieldUpdateOperationsInput | boolean
   message_service?: Prisma.BoolFieldUpdateOperationsInput | boolean
   event_service?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  gallery_service?: Prisma.BoolFieldUpdateOperationsInput | boolean
   page_views?: Prisma.IntFieldUpdateOperationsInput | number
   products?: Prisma.ProductUncheckedUpdateManyWithoutBusinessNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutBusinessNestedInput
@@ -1781,6 +1831,7 @@ export type BusinessCreateWithoutOrdersInput = {
   product_service?: boolean
   message_service?: boolean
   event_service?: boolean
+  gallery_service?: boolean
   page_views?: number
   products?: Prisma.ProductCreateNestedManyWithoutBusinessInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutBusinessInput
@@ -1810,6 +1861,7 @@ export type BusinessUncheckedCreateWithoutOrdersInput = {
   product_service?: boolean
   message_service?: boolean
   event_service?: boolean
+  gallery_service?: boolean
   page_views?: number
   products?: Prisma.ProductUncheckedCreateNestedManyWithoutBusinessInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutBusinessInput
@@ -1855,6 +1907,7 @@ export type BusinessUpdateWithoutOrdersInput = {
   product_service?: Prisma.BoolFieldUpdateOperationsInput | boolean
   message_service?: Prisma.BoolFieldUpdateOperationsInput | boolean
   event_service?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  gallery_service?: Prisma.BoolFieldUpdateOperationsInput | boolean
   page_views?: Prisma.IntFieldUpdateOperationsInput | number
   products?: Prisma.ProductUpdateManyWithoutBusinessNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutBusinessNestedInput
@@ -1884,6 +1937,7 @@ export type BusinessUncheckedUpdateWithoutOrdersInput = {
   product_service?: Prisma.BoolFieldUpdateOperationsInput | boolean
   message_service?: Prisma.BoolFieldUpdateOperationsInput | boolean
   event_service?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  gallery_service?: Prisma.BoolFieldUpdateOperationsInput | boolean
   page_views?: Prisma.IntFieldUpdateOperationsInput | number
   products?: Prisma.ProductUncheckedUpdateManyWithoutBusinessNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutBusinessNestedInput
@@ -1913,6 +1967,7 @@ export type BusinessCreateWithoutQuoteRequestsInput = {
   product_service?: boolean
   message_service?: boolean
   event_service?: boolean
+  gallery_service?: boolean
   page_views?: number
   products?: Prisma.ProductCreateNestedManyWithoutBusinessInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutBusinessInput
@@ -1942,6 +1997,7 @@ export type BusinessUncheckedCreateWithoutQuoteRequestsInput = {
   product_service?: boolean
   message_service?: boolean
   event_service?: boolean
+  gallery_service?: boolean
   page_views?: number
   products?: Prisma.ProductUncheckedCreateNestedManyWithoutBusinessInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutBusinessInput
@@ -1987,6 +2043,7 @@ export type BusinessUpdateWithoutQuoteRequestsInput = {
   product_service?: Prisma.BoolFieldUpdateOperationsInput | boolean
   message_service?: Prisma.BoolFieldUpdateOperationsInput | boolean
   event_service?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  gallery_service?: Prisma.BoolFieldUpdateOperationsInput | boolean
   page_views?: Prisma.IntFieldUpdateOperationsInput | number
   products?: Prisma.ProductUpdateManyWithoutBusinessNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutBusinessNestedInput
@@ -2016,6 +2073,7 @@ export type BusinessUncheckedUpdateWithoutQuoteRequestsInput = {
   product_service?: Prisma.BoolFieldUpdateOperationsInput | boolean
   message_service?: Prisma.BoolFieldUpdateOperationsInput | boolean
   event_service?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  gallery_service?: Prisma.BoolFieldUpdateOperationsInput | boolean
   page_views?: Prisma.IntFieldUpdateOperationsInput | number
   products?: Prisma.ProductUncheckedUpdateManyWithoutBusinessNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutBusinessNestedInput
@@ -2045,6 +2103,7 @@ export type BusinessCreateWithoutEventsInput = {
   product_service?: boolean
   message_service?: boolean
   event_service?: boolean
+  gallery_service?: boolean
   page_views?: number
   products?: Prisma.ProductCreateNestedManyWithoutBusinessInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutBusinessInput
@@ -2074,6 +2133,7 @@ export type BusinessUncheckedCreateWithoutEventsInput = {
   product_service?: boolean
   message_service?: boolean
   event_service?: boolean
+  gallery_service?: boolean
   page_views?: number
   products?: Prisma.ProductUncheckedCreateNestedManyWithoutBusinessInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutBusinessInput
@@ -2119,6 +2179,7 @@ export type BusinessUpdateWithoutEventsInput = {
   product_service?: Prisma.BoolFieldUpdateOperationsInput | boolean
   message_service?: Prisma.BoolFieldUpdateOperationsInput | boolean
   event_service?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  gallery_service?: Prisma.BoolFieldUpdateOperationsInput | boolean
   page_views?: Prisma.IntFieldUpdateOperationsInput | number
   products?: Prisma.ProductUpdateManyWithoutBusinessNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutBusinessNestedInput
@@ -2148,6 +2209,7 @@ export type BusinessUncheckedUpdateWithoutEventsInput = {
   product_service?: Prisma.BoolFieldUpdateOperationsInput | boolean
   message_service?: Prisma.BoolFieldUpdateOperationsInput | boolean
   event_service?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  gallery_service?: Prisma.BoolFieldUpdateOperationsInput | boolean
   page_views?: Prisma.IntFieldUpdateOperationsInput | number
   products?: Prisma.ProductUncheckedUpdateManyWithoutBusinessNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutBusinessNestedInput
@@ -2289,6 +2351,7 @@ export type BusinessSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   product_service?: boolean
   message_service?: boolean
   event_service?: boolean
+  gallery_service?: boolean
   page_views?: boolean
   products?: boolean | Prisma.Business$productsArgs<ExtArgs>
   reviews?: boolean | Prisma.Business$reviewsArgs<ExtArgs>
@@ -2320,6 +2383,7 @@ export type BusinessSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   product_service?: boolean
   message_service?: boolean
   event_service?: boolean
+  gallery_service?: boolean
   page_views?: boolean
 }, ExtArgs["result"]["business"]>
 
@@ -2340,6 +2404,7 @@ export type BusinessSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   product_service?: boolean
   message_service?: boolean
   event_service?: boolean
+  gallery_service?: boolean
   page_views?: boolean
 }, ExtArgs["result"]["business"]>
 
@@ -2360,10 +2425,11 @@ export type BusinessSelectScalar = {
   product_service?: boolean
   message_service?: boolean
   event_service?: boolean
+  gallery_service?: boolean
   page_views?: boolean
 }
 
-export type BusinessOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "slug" | "name" | "tagline" | "aboutText" | "contactEmail" | "contactPhone" | "address" | "createdAt" | "updatedAt" | "published" | "appointment_service" | "quote_service" | "product_service" | "message_service" | "event_service" | "page_views", ExtArgs["result"]["business"]>
+export type BusinessOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "slug" | "name" | "tagline" | "aboutText" | "contactEmail" | "contactPhone" | "address" | "createdAt" | "updatedAt" | "published" | "appointment_service" | "quote_service" | "product_service" | "message_service" | "event_service" | "gallery_service" | "page_views", ExtArgs["result"]["business"]>
 export type BusinessInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   products?: boolean | Prisma.Business$productsArgs<ExtArgs>
   reviews?: boolean | Prisma.Business$reviewsArgs<ExtArgs>
@@ -2411,6 +2477,7 @@ export type $BusinessPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     product_service: boolean
     message_service: boolean
     event_service: boolean
+    gallery_service: boolean
     page_views: number
   }, ExtArgs["result"]["business"]>
   composites: {}
@@ -2861,6 +2928,7 @@ export interface BusinessFieldRefs {
   readonly product_service: Prisma.FieldRef<"Business", 'Boolean'>
   readonly message_service: Prisma.FieldRef<"Business", 'Boolean'>
   readonly event_service: Prisma.FieldRef<"Business", 'Boolean'>
+  readonly gallery_service: Prisma.FieldRef<"Business", 'Boolean'>
   readonly page_views: Prisma.FieldRef<"Business", 'Int'>
 }
     

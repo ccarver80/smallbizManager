@@ -125,6 +125,7 @@ export const BusinessScalarFieldEnum = {
   product_service: 'product_service',
   message_service: 'message_service',
   event_service: 'event_service',
+  gallery_service: 'gallery_service',
   page_views: 'page_views'
 } as const
 
