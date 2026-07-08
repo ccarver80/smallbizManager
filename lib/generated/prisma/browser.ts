@@ -82,3 +82,13 @@ export type OrderNote = Prisma.OrderNoteModel
  * 
  */
 export type OrderItem = Prisma.OrderItemModel
+/**
+ * Model QuoteRequest
+ * 
+ */
+export type QuoteRequest = Prisma.QuoteRequestModel
+/**
+ * Model Event
+ * 
+ */
+export type Event = Prisma.EventModel

@@ -15,7 +15,7 @@ export default function LoginPage() {
             href="/"
             className="text-lg font-semibold tracking-tight text-zinc-950 dark:text-zinc-50"
           >
-            Bizmanager
+            MyBiz.host
           </Link>
           <h1 className="mt-6 text-2xl font-semibold tracking-tight text-zinc-950 dark:text-zinc-50">
             Sign in

@@ -1,9 +1,12 @@
 import { Button, Chip, Link as HeroLink, Typography } from "@heroui/react";
 import { signOut } from "@/auth";
-import type { Business } from "@/lib/generated/prisma/client";
-
-export function DashboardHeader({ business }: { business: Business }) {
-  const siteUrl = `//${business.subdomain}.${process.env.ROOT_DOMAIN}`;
+export function DashboardHeader({
+  business,
+}: {
+  business: { name: string; slug: string; published: boolean };
+}) {
+  const rootDomain = process.env.ROOT_DOMAIN ?? "mybiz.host";
+  const siteUrl = `//${rootDomain}/${business.slug}`;
 
   return (
     <div className="flex items-center justify-between">
@@ -17,7 +20,7 @@ export function DashboardHeader({ business }: { business: Business }) {
           </Chip>
         </div>
         <HeroLink href={siteUrl} target="_blank" className="text-sm">
-          {business.subdomain}.{process.env.ROOT_DOMAIN}
+          {rootDomain}/{business.slug}
         </HeroLink>
       </div>
       <form

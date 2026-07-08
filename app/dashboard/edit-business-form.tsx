@@ -7,15 +7,13 @@ import {
   Input,
   InputGroup,
   Label,
-  Radio,
-  RadioGroup,
   TextArea,
   TextField,
 } from "@heroui/react";
 import { updateBusiness, type UpdateBusinessState } from "./actions";
 import type { Business } from "@/lib/generated/prisma/client";
 
-const ROOT_DOMAIN = process.env.NEXT_PUBLIC_ROOT_DOMAIN ?? "mydomain.com";
+const ROOT_DOMAIN = process.env.NEXT_PUBLIC_ROOT_DOMAIN ?? "mybiz.host";
 
 export function EditBusinessForm({ business }: { business: Business }) {
   const [state, action, pending] = useActionState<UpdateBusinessState, FormData>(
@@ -37,43 +35,48 @@ export function EditBusinessForm({ business }: { business: Business }) {
           </TextField>
 
           <div className="flex flex-col gap-1.5">
-            <Label htmlFor="subdomain">Domain</Label>
+            <Label htmlFor="slug">Your URL</Label>
             <InputGroup>
+              <InputGroup.Prefix>{ROOT_DOMAIN}/</InputGroup.Prefix>
               <InputGroup.Input
-                id="subdomain"
-                name="subdomain"
-                defaultValue={business.subdomain}
+                id="slug"
+                name="slug"
+                defaultValue={business.slug}
               />
-              <InputGroup.Suffix>.{ROOT_DOMAIN}</InputGroup.Suffix>
             </InputGroup>
-            {state?.errors?.subdomain && (
-              <p className="text-xs text-danger">{state.errors.subdomain[0]}</p>
+            {state?.errors?.slug && (
+              <p className="text-xs text-danger">{state.errors.slug[0]}</p>
             )}
           </div>
 
           <div className="flex flex-col gap-1.5">
-            <Label>Business type</Label>
-            <RadioGroup name="businessType" defaultValue={business.businessType}>
-              <Radio value="SERVICE">
-                <Radio.Content>
-                  <Radio.Control>
-                    <Radio.Indicator />
-                  </Radio.Control>
-                  Service — appointments &amp; bookings
-                </Radio.Content>
-              </Radio>
-              <Radio value="PRODUCT">
-                <Radio.Content>
-                  <Radio.Control>
-                    <Radio.Indicator />
-                  </Radio.Control>
-                  Product — orders &amp; custom requests
-                </Radio.Content>
-              </Radio>
-            </RadioGroup>
-            {state?.errors?.businessType && (
-              <p className="text-xs text-danger">{state.errors.businessType[0]}</p>
-            )}
+            <Label>Services</Label>
+            <p className="text-xs text-muted">Enable the features you want on your page. You can change these anytime.</p>
+            <div className="mt-1 flex flex-col gap-2">
+              {([
+                { name: "appointment_service", defaultChecked: business.appointment_service, label: "Appointments", description: "Customers can book a time with you" },
+                { name: "quote_service", defaultChecked: business.quote_service, label: "Quote requests", description: "Customers describe a job and you send a price" },
+                { name: "product_service", defaultChecked: business.product_service, label: "Products & orders", description: "Customers browse and order what you sell" },
+                { name: "message_service", defaultChecked: business.message_service, label: "Messages", description: "Customers can send you a direct message" },
+                { name: "event_service", defaultChecked: business.event_service, label: "Events", description: "Promote upcoming vendor shows, craft fairs, and more" },
+              ] as const).map((service) => (
+                <label
+                  key={service.name}
+                  className="flex cursor-pointer items-start gap-3 rounded-lg border border-border p-3 has-checked:border-foreground"
+                >
+                  <input
+                    type="checkbox"
+                    name={service.name}
+                    defaultChecked={service.defaultChecked}
+                    className="mt-0.5"
+                  />
+                  <div>
+                    <span className="text-sm font-medium text-foreground">{service.label}</span>
+                    <span className="mt-0.5 block text-xs text-muted">{service.description}</span>
+                  </div>
+                </label>
+              ))}
+            </div>
           </div>
 
           <TextField name="tagline" defaultValue={business.tagline ?? ""}>

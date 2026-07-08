@@ -2,7 +2,7 @@ import type { Business } from "@/lib/generated/prisma/client";
 
 const REQUIRED_FIELDS = [
   "name",
-  "subdomain",
+  "slug",
   "tagline",
   "aboutText",
   "contactEmail",

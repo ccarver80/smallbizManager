@@ -4,9 +4,8 @@ import * as z from "zod";
 import { revalidatePath } from "next/cache";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
-import { RESERVED_SUBDOMAINS, SUBDOMAIN_PATTERN } from "@/lib/subdomain";
+import { RESERVED_SLUGS, SLUG_PATTERN } from "@/lib/slug";
 import { isBusinessComplete } from "@/lib/business";
-import { BusinessType } from "@/lib/generated/prisma/enums";
 
 const optionalText = (max: number) =>
   z
@@ -19,14 +18,18 @@ const optionalText = (max: number) =>
 
 const UpdateBusinessSchema = z.object({
   name: z.string().trim().min(2, "Business name must be at least 2 characters."),
-  subdomain: z
+  slug: z
     .string()
     .trim()
     .toLowerCase()
-    .min(3, "Domain must be at least 3 characters.")
-    .max(63, "Domain must be at most 63 characters.")
-    .regex(SUBDOMAIN_PATTERN, "Use lowercase letters, numbers, and hyphens only."),
-  businessType: z.enum(BusinessType, "Choose a business type."),
+    .min(3, "URL must be at least 3 characters.")
+    .max(63, "URL must be at most 63 characters.")
+    .regex(SLUG_PATTERN, "Use lowercase letters, numbers, and hyphens only."),
+  appointment_service: z.boolean(),
+  quote_service: z.boolean(),
+  product_service: z.boolean(),
+  message_service: z.boolean(),
+  event_service: z.boolean(),
   tagline: optionalText(140),
   aboutText: optionalText(2000),
   contactEmail: z
@@ -42,8 +45,7 @@ export type UpdateBusinessState =
   | {
       errors?: {
         name?: string[];
-        subdomain?: string[];
-        businessType?: string[];
+        slug?: string[];
         tagline?: string[];
         aboutText?: string[];
         contactEmail?: string[];
@@ -66,8 +68,12 @@ export async function updateBusiness(
 
   const validatedFields = UpdateBusinessSchema.safeParse({
     name: formData.get("name"),
-    subdomain: formData.get("subdomain"),
-    businessType: formData.get("businessType"),
+    slug: formData.get("slug"),
+    appointment_service: formData.get("appointment_service") === "on",
+    quote_service: formData.get("quote_service") === "on",
+    product_service: formData.get("product_service") === "on",
+    message_service: formData.get("message_service") === "on",
+    event_service: formData.get("event_service") === "on",
     tagline: formData.get("tagline"),
     aboutText: formData.get("aboutText"),
     contactEmail: formData.get("contactEmail"),
@@ -79,21 +85,21 @@ export async function updateBusiness(
     return { errors: z.flattenError(validatedFields.error).fieldErrors };
   }
 
-  const { name, subdomain, businessType, tagline, aboutText, contactEmail, contactPhone, address } =
+  const { name, slug, appointment_service, quote_service, product_service, message_service, event_service, tagline, aboutText, contactEmail, contactPhone, address } =
     validatedFields.data;
 
-  if (RESERVED_SUBDOMAINS.has(subdomain)) {
-    return { errors: { subdomain: ["This domain is reserved."] } };
+  if (RESERVED_SLUGS.has(slug)) {
+    return { errors: { slug: ["This URL is reserved."] } };
   }
 
-  const existingBusiness = await prisma.business.findUnique({ where: { subdomain } });
+  const existingBusiness = await prisma.business.findUnique({ where: { slug } });
   if (existingBusiness && existingBusiness.id !== session.user.businessId) {
-    return { errors: { subdomain: ["This domain is already taken."] } };
+    return { errors: { slug: ["This URL is already taken."] } };
   }
 
   const published = isBusinessComplete({
     name,
-    subdomain,
+    slug,
     tagline,
     aboutText,
     contactEmail,
@@ -105,8 +111,12 @@ export async function updateBusiness(
     where: { id: session.user.businessId },
     data: {
       name,
-      subdomain,
-      businessType,
+      slug,
+      appointment_service,
+      quote_service,
+      product_service,
+      message_service,
+      event_service,
       tagline,
       aboutText,
       contactEmail,

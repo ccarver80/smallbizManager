@@ -9,12 +9,15 @@
 * 🟢 You can import this file directly.
 */
 
-export const BusinessType = {
-  SERVICE: 'SERVICE',
-  PRODUCT: 'PRODUCT'
+export const QuoteStatus = {
+  NEW: 'NEW',
+  REVIEWED: 'REVIEWED',
+  SENT: 'SENT',
+  ACCEPTED: 'ACCEPTED',
+  DECLINED: 'DECLINED'
 } as const
 
-export type BusinessType = (typeof BusinessType)[keyof typeof BusinessType]
+export type QuoteStatus = (typeof QuoteStatus)[keyof typeof QuoteStatus]
 
 
 export const AppointmentStatus = {

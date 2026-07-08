@@ -6,18 +6,19 @@ import {
   Typography,
   buttonVariants,
 } from "@heroui/react";
-import { BusinessType } from "@/lib/generated/prisma/enums";
 import type {
   Appointment,
   AppointmentNote,
   Business,
   Customer,
+  Event,
   Message,
   Order,
   OrderItem,
   OrderNote,
   Photo,
   Product,
+  QuoteRequest,
 } from "@/lib/generated/prisma/client";
 import { DashboardHeader } from "./dashboard-header";
 import { PhotosSection } from "./photos-section";
@@ -26,6 +27,7 @@ import { CustomersSection } from "./customers-section";
 import { OrdersTable } from "./orders-table";
 import { AddOrderForm } from "./add-order-form";
 import { AppointmentsTable } from "./appointments-table";
+import { EventsSection } from "./events-section";
 
 const calendarIcon = (
   <path
@@ -43,6 +45,14 @@ const messageIcon = (
   />
 );
 
+const clipboardIcon = (
+  <path
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2"
+  />
+);
+
 export function PublishedDashboard({
   business,
 }: {
@@ -56,10 +66,16 @@ export function PublishedDashboard({
       user_notes: OrderNote[];
     })[];
     customers: Customer[];
+    quoteRequests: QuoteRequest[];
+    events: Event[];
   };
 }) {
-  const isService = business.businessType === BusinessType.SERVICE;
-  const catalogTabId = isService ? "photos" : "products";
+  const isAppointment = business.appointment_service;
+  const isQuote = business.quote_service;
+  const isProduct = business.product_service;
+  const isEvent = business.event_service;
+
+  const catalogTabId = isProduct ? "products" : "photos";
 
   return (
     <div className="flex flex-1 flex-col bg-surface-secondary px-6 py-12">
@@ -70,12 +86,14 @@ export function PublishedDashboard({
           <Tabs.ListContainer>
             <Tabs.List aria-label="Dashboard sections">
               <Tabs.Tab id="overview">Overview</Tabs.Tab>
-              {isService && <Tabs.Tab id="appointments">Appointments</Tabs.Tab>}
-              {isService && <Tabs.Tab id="calendar">Calendar</Tabs.Tab>}
-              {!isService && <Tabs.Tab id="orders">Orders</Tabs.Tab>}
+              {isAppointment && <Tabs.Tab id="appointments">Appointments</Tabs.Tab>}
+              {isAppointment && <Tabs.Tab id="calendar">Calendar</Tabs.Tab>}
+              {isQuote && <Tabs.Tab id="quotes">Quote requests</Tabs.Tab>}
+              {isProduct && <Tabs.Tab id="orders">Orders</Tabs.Tab>}
               <Tabs.Tab id="messages">Messages</Tabs.Tab>
+              {isEvent && <Tabs.Tab id="events">Events</Tabs.Tab>}
               <Tabs.Tab id={catalogTabId}>
-                {isService ? "Photos" : "Products"}
+                {isProduct ? "Products" : "Photos"}
               </Tabs.Tab>
               <Tabs.Tab id="customers">Customers</Tabs.Tab>
               <Tabs.Tab id="settings">Settings</Tabs.Tab>
@@ -98,13 +116,13 @@ export function PublishedDashboard({
             </Card>
           </Tabs.Panel>
 
-          {isService && (
+          {isAppointment && (
             <Tabs.Panel id="appointments" className="pt-6">
               <AppointmentsTable appointments={business.appointments} />
             </Tabs.Panel>
           )}
 
-          {isService && (
+          {isAppointment && (
             <Tabs.Panel id="calendar" className="pt-6">
               <Card>
                 <Card.Header>
@@ -133,7 +151,76 @@ export function PublishedDashboard({
             </Tabs.Panel>
           )}
 
-          {!isService && (
+          {isQuote && (
+            <Tabs.Panel id="quotes" className="pt-6">
+              <Card>
+                <Card.Header>
+                  <Card.Title>Quote requests</Card.Title>
+                  <Card.Description>
+                    Customers who have requested a quote from your page.
+                  </Card.Description>
+                </Card.Header>
+                <Card.Content>
+                  {business.quoteRequests.length > 0 ? (
+                    <ul className="flex flex-col gap-3">
+                      {business.quoteRequests.map((quote) => (
+                        <li
+                          key={quote.id}
+                          className="flex flex-col gap-2 rounded-lg border border-border p-4 text-sm"
+                        >
+                          <div className="flex items-start justify-between gap-2">
+                            <div>
+                              <p className="font-medium text-foreground">{quote.customerName}</p>
+                              <p className="text-muted">{quote.customerEmail}</p>
+                              {quote.customerPhone && (
+                                <p className="text-muted">{quote.customerPhone}</p>
+                              )}
+                            </div>
+                            <span className="shrink-0 rounded-full bg-surface-secondary px-2 py-0.5 text-xs text-muted">
+                              {quote.status}
+                            </span>
+                          </div>
+                          <p className="text-foreground">{quote.description}</p>
+                          {quote.serviceAddress && (
+                            <p className="text-muted">📍 {quote.serviceAddress}</p>
+                          )}
+                          {quote.timeline && (
+                            <p className="text-muted">⏱ {quote.timeline}</p>
+                          )}
+                          {quote.notes && (
+                            <p className="text-muted italic">{quote.notes}</p>
+                          )}
+                          <p className="text-xs text-muted">
+                            {quote.createdAt.toLocaleString(undefined, {
+                              dateStyle: "medium",
+                              timeStyle: "short",
+                            })}
+                          </p>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <EmptyState className="flex flex-col items-center gap-2 py-8 text-center">
+                      <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth={1.5}
+                        className="h-8 w-8 text-muted"
+                      >
+                        {clipboardIcon}
+                      </svg>
+                      <Typography.Paragraph size="sm" className="text-muted">
+                        No quote requests yet
+                      </Typography.Paragraph>
+                    </EmptyState>
+                  )}
+                </Card.Content>
+              </Card>
+            </Tabs.Panel>
+          )}
+
+          {isProduct && (
             <Tabs.Panel id="orders" className="flex flex-col gap-6 pt-6">
               <OrdersTable
                 orders={business.orders.map((order) => ({
@@ -211,15 +298,15 @@ export function PublishedDashboard({
           </Tabs.Panel>
 
           <Tabs.Panel id={catalogTabId} className="pt-6">
-            {isService ? (
-              <PhotosSection photos={business.photos} />
-            ) : (
+            {isProduct ? (
               <ProductsSection
                 products={business.products.map((product) => ({
                   ...product,
                   price: product.price ? Number(product.price) : null,
                 }))}
               />
+            ) : (
+              <PhotosSection photos={business.photos} />
             )}
           </Tabs.Panel>
 
@@ -227,12 +314,18 @@ export function PublishedDashboard({
             <CustomersSection customers={business.customers} />
           </Tabs.Panel>
 
+          {isEvent && (
+            <Tabs.Panel id="events" className="pt-6">
+              <EventsSection events={business.events} />
+            </Tabs.Panel>
+          )}
+
           <Tabs.Panel id="settings" className="pt-6">
             <Card>
               <Card.Header>
                 <Card.Title>Business settings</Card.Title>
                 <Card.Description>
-                  Edit your business info, contact details, and business type.
+                  Edit your business info, contact details, and active services.
                 </Card.Description>
               </Card.Header>
               <Card.Footer>

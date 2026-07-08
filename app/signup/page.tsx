@@ -4,7 +4,7 @@ import { useActionState } from "react";
 import Link from "next/link";
 import { signup } from "./actions";
 
-const ROOT_DOMAIN = process.env.NEXT_PUBLIC_ROOT_DOMAIN ?? "mydomain.com";
+const ROOT_DOMAIN = process.env.NEXT_PUBLIC_ROOT_DOMAIN ?? "mybiz.host";
 
 export default function SignupPage() {
   const [state, action, pending] = useActionState(signup, undefined);
@@ -17,7 +17,7 @@ export default function SignupPage() {
             href="/"
             className="text-lg font-semibold tracking-tight text-zinc-950 dark:text-zinc-50"
           >
-            Bizmanager
+            MyBiz.host
           </Link>
           <h1 className="mt-6 text-2xl font-semibold tracking-tight text-zinc-950 dark:text-zinc-50">
             Create your account
@@ -51,68 +51,26 @@ export default function SignupPage() {
 
           <div>
             <label
-              htmlFor="subdomain"
+              htmlFor="slug"
               className="mb-1.5 block text-sm font-medium text-zinc-950 dark:text-zinc-50"
             >
-              Your domain
+              Your URL
             </label>
-            <div className="flex items-center rounded-lg border border-black/12 bg-white pl-4 text-sm text-zinc-500 focus-within:border-zinc-950 dark:border-white/15 dark:bg-zinc-950 dark:text-zinc-400 dark:focus-within:border-zinc-50">
+            <div className="flex items-center rounded-lg border border-black/12 bg-white pr-4 text-sm text-zinc-500 focus-within:border-zinc-950 dark:border-white/15 dark:bg-zinc-950 dark:text-zinc-400 dark:focus-within:border-zinc-50">
+              <span className="whitespace-nowrap pl-4 text-zinc-400">
+                {ROOT_DOMAIN}/
+              </span>
               <input
-                id="subdomain"
-                name="subdomain"
+                id="slug"
+                name="slug"
                 type="text"
                 placeholder="yourbusiness"
                 className="w-full bg-transparent py-2.5 text-zinc-950 outline-none placeholder:text-zinc-400 dark:text-zinc-50"
               />
-              <span className="whitespace-nowrap pr-4 text-zinc-400">
-                .{ROOT_DOMAIN}
-              </span>
             </div>
-            {state?.errors?.subdomain && (
+            {state?.errors?.slug && (
               <p className="mt-1.5 text-xs text-red-600 dark:text-red-400">
-                {state.errors.subdomain[0]}
-              </p>
-            )}
-          </div>
-
-          <div>
-            <span className="mb-1.5 block text-sm font-medium text-zinc-950 dark:text-zinc-50">
-              Business type
-            </span>
-            <div className="grid grid-cols-2 gap-3">
-              <label className="flex cursor-pointer flex-col gap-1 rounded-lg border border-black/12 p-3 has-checked:border-zinc-950 dark:border-white/15 dark:has-checked:border-zinc-50">
-                <input
-                  type="radio"
-                  name="businessType"
-                  value="SERVICE"
-                  defaultChecked
-                  className="sr-only"
-                />
-                <span className="text-sm font-medium text-zinc-950 dark:text-zinc-50">
-                  Service
-                </span>
-                <span className="text-xs text-zinc-500 dark:text-zinc-400">
-                  Appointments &amp; bookings
-                </span>
-              </label>
-              <label className="flex cursor-pointer flex-col gap-1 rounded-lg border border-black/12 p-3 has-checked:border-zinc-950 dark:border-white/15 dark:has-checked:border-zinc-50">
-                <input
-                  type="radio"
-                  name="businessType"
-                  value="PRODUCT"
-                  className="sr-only"
-                />
-                <span className="text-sm font-medium text-zinc-950 dark:text-zinc-50">
-                  Product
-                </span>
-                <span className="text-xs text-zinc-500 dark:text-zinc-400">
-                  Orders &amp; custom requests
-                </span>
-              </label>
-            </div>
-            {state?.errors?.businessType && (
-              <p className="mt-1.5 text-xs text-red-600 dark:text-red-400">
-                {state.errors.businessType[0]}
+                {state.errors.slug[0]}
               </p>
             )}
           </div>

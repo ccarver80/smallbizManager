@@ -7,32 +7,38 @@ import {
   Typography,
   buttonVariants,
 } from "@heroui/react";
-import { BusinessType } from "@/lib/generated/prisma/enums";
 import { GallerySection } from "./gallery-section";
 import { ReviewsSection } from "./reviews-section";
 import { BookingSection } from "./booking-section";
+import { QuoteSection } from "./quote-section";
 import { MessageSection } from "./message-section";
 import { OrderSection } from "./order-section";
+import { EventSection } from "./event-section";
 
 type Props = {
-  params: Promise<{ domain: string }>;
+  params: Promise<{ slug: string }>;
 };
 
 export async function generateMetadata({ params }: Props) {
-  const { domain } = await params;
-  const business = await getBusinessBySlug(domain);
+  const { slug } = await params;
+  const business = await getBusinessBySlug(slug);
   return { title: business ? business.name : "Site not found" };
 }
 
-export default async function TenantHomePage({ params }: Props) {
-  const { domain } = await params;
-  const business = await getBusinessBySlug(domain);
+export default async function BusinessPage({ params }: Props) {
+  const { slug } = await params;
+  const business = await getBusinessBySlug(slug);
 
   if (!business) {
     notFound();
   }
 
   await incrementPageView(business.id);
+
+  const isAppointment = business.appointment_service;
+  const isQuote = business.quote_service;
+  const isProduct = business.product_service;
+  const isEvent = business.event_service;
 
   return (
     <div className="flex flex-1 flex-col">
@@ -43,20 +49,15 @@ export default async function TenantHomePage({ params }: Props) {
           </span>
           <nav className="hidden items-center gap-6 text-sm sm:flex">
             {business.aboutText && <HeroLink href="#about">About</HeroLink>}
-            {business.businessType === BusinessType.APPOINTMENT &&
-              business.photos.length > 0 && (
-                <HeroLink href="#gallery">Gallery</HeroLink>
-              )}
-            {business.businessType === BusinessType.APPOINTMENT && (
-              <HeroLink href="#booking">Book now</HeroLink>
+            {(isAppointment || isQuote) && business.photos.length > 0 && (
+              <HeroLink href="#gallery">Gallery</HeroLink>
             )}
-            {business.businessType === BusinessType.PRODUCT &&
-              business.products.length > 0 && (
-                <HeroLink href="#products">Products</HeroLink>
-              )}
-            {business.businessType === BusinessType.PRODUCT && (
-              <HeroLink href="#order">Order now</HeroLink>
+            {isAppointment && <HeroLink href="#booking">Book now</HeroLink>}
+            {isQuote && <HeroLink href="#quote">Get a quote</HeroLink>}
+            {isProduct && business.products.length > 0 && (
+              <HeroLink href="#products">Products</HeroLink>
             )}
+            {isProduct && <HeroLink href="#order">Order now</HeroLink>}
             <HeroLink href="#reviews">Reviews</HeroLink>
             <HeroLink href="#message">Message us</HeroLink>
           </nav>
@@ -86,7 +87,7 @@ export default async function TenantHomePage({ params }: Props) {
             >
               Get in touch
             </a>
-            {business.businessType === BusinessType.APPOINTMENT && (
+            {isAppointment && (
               <a
                 href="#booking"
                 className="rounded-full border border-white/25 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-white/10"
@@ -94,16 +95,23 @@ export default async function TenantHomePage({ params }: Props) {
                 Book now
               </a>
             )}
-            {business.businessType === BusinessType.PRODUCT &&
-              business.products.length > 0 && (
-                <a
-                  href="#products"
-                  className="rounded-full border border-white/25 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-white/10"
-                >
-                  View products
-                </a>
-              )}
-            {business.businessType === BusinessType.PRODUCT && (
+            {isQuote && (
+              <a
+                href="#quote"
+                className="rounded-full border border-white/25 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-white/10"
+              >
+                Get a quote
+              </a>
+            )}
+            {isProduct && business.products.length > 0 && (
+              <a
+                href="#products"
+                className="rounded-full border border-white/25 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-white/10"
+              >
+                View products
+              </a>
+            )}
+            {isProduct && (
               <a
                 href="#order"
                 className="rounded-full border border-white/25 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-white/10"
@@ -128,18 +136,23 @@ export default async function TenantHomePage({ params }: Props) {
           </section>
         )}
 
-        {/* Gallery */}
-        {business.businessType === BusinessType.APPOINTMENT && (
+        {/* Gallery — appointment & quote businesses */}
+        {(isAppointment || isQuote) && (
           <GallerySection photos={business.photos} businessName={business.name} />
         )}
 
-        {/* Booking */}
-        {business.businessType === BusinessType.APPOINTMENT && (
-          <BookingSection businessId={business.id} subdomain={business.slug} />
+        {/* Booking — appointment businesses */}
+        {isAppointment && (
+          <BookingSection businessId={business.id} slug={business.slug} />
         )}
 
-        {/* Products */}
-        {business.businessType === BusinessType.PRODUCT && business.products.length > 0 && (
+        {/* Quote request — quote businesses */}
+        {isQuote && (
+          <QuoteSection businessId={business.id} slug={business.slug} />
+        )}
+
+        {/* Products — product businesses */}
+        {isProduct && business.products.length > 0 && (
           <section
             id="products"
             className="border-t border-border bg-surface-secondary py-20"
@@ -168,9 +181,7 @@ export default async function TenantHomePage({ params }: Props) {
                     <Card.Header>
                       <Card.Title>{product.title}</Card.Title>
                       {product.description && (
-                        <Card.Description>
-                          {product.description}
-                        </Card.Description>
+                        <Card.Description>{product.description}</Card.Description>
                       )}
                     </Card.Header>
                     {product.price != null && (
@@ -187,11 +198,11 @@ export default async function TenantHomePage({ params }: Props) {
           </section>
         )}
 
-        {/* Order */}
-        {business.businessType === BusinessType.PRODUCT && (
+        {/* Order — product businesses */}
+        {isProduct && (
           <OrderSection
             businessId={business.id}
-            subdomain={business.slug}
+            slug={business.slug}
             products={business.products.map((product) => ({
               ...product,
               price: product.price ? Number(product.price) : null,
@@ -199,17 +210,22 @@ export default async function TenantHomePage({ params }: Props) {
           />
         )}
 
+        {/* Events */}
+        {isEvent && (
+          <EventSection events={business.events ?? []} />
+        )}
+
         {/* Reviews */}
         <ReviewsSection
           businessId={business.id}
-          subdomain={business.slug}
+          slug={business.slug}
           reviews={business.reviews}
         />
 
         {/* Message */}
         <MessageSection
           businessId={business.id}
-          subdomain={business.slug}
+          slug={business.slug}
           businessName={business.name}
         />
 

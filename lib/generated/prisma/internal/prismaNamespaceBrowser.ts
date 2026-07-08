@@ -63,7 +63,9 @@ export const ModelName = {
   AppointmentNote: 'AppointmentNote',
   Order: 'Order',
   OrderNote: 'OrderNote',
-  OrderItem: 'OrderItem'
+  OrderItem: 'OrderItem',
+  QuoteRequest: 'QuoteRequest',
+  Event: 'Event'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -108,7 +110,7 @@ export type PlansScalarFieldEnum = (typeof PlansScalarFieldEnum)[keyof typeof Pl
 
 export const BusinessScalarFieldEnum = {
   id: 'id',
-  subdomain: 'subdomain',
+  slug: 'slug',
   name: 'name',
   tagline: 'tagline',
   aboutText: 'aboutText',
@@ -118,7 +120,11 @@ export const BusinessScalarFieldEnum = {
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   published: 'published',
-  businessType: 'businessType',
+  appointment_service: 'appointment_service',
+  quote_service: 'quote_service',
+  product_service: 'product_service',
+  message_service: 'message_service',
+  event_service: 'event_service',
   page_views: 'page_views'
 } as const
 
@@ -251,6 +257,38 @@ export const OrderItemScalarFieldEnum = {
 } as const
 
 export type OrderItemScalarFieldEnum = (typeof OrderItemScalarFieldEnum)[keyof typeof OrderItemScalarFieldEnum]
+
+
+export const QuoteRequestScalarFieldEnum = {
+  id: 'id',
+  businessId: 'businessId',
+  customerName: 'customerName',
+  customerEmail: 'customerEmail',
+  customerPhone: 'customerPhone',
+  description: 'description',
+  serviceAddress: 'serviceAddress',
+  timeline: 'timeline',
+  notes: 'notes',
+  status: 'status',
+  createdAt: 'createdAt'
+} as const
+
+export type QuoteRequestScalarFieldEnum = (typeof QuoteRequestScalarFieldEnum)[keyof typeof QuoteRequestScalarFieldEnum]
+
+
+export const EventScalarFieldEnum = {
+  id: 'id',
+  businessId: 'businessId',
+  title: 'title',
+  description: 'description',
+  location: 'location',
+  startsAt: 'startsAt',
+  endsAt: 'endsAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type EventScalarFieldEnum = (typeof EventScalarFieldEnum)[keyof typeof EventScalarFieldEnum]
 
 
 export const SortOrder = {

@@ -30,6 +30,8 @@ export default async function DashboardPage() {
           user_notes: { orderBy: { createdAt: "desc" } },
         },
       },
+      quoteRequests: { orderBy: { createdAt: "desc" } },
+      events: { where: { startsAt: { gte: new Date() } }, orderBy: { startsAt: "asc" } },
     },
   });
 

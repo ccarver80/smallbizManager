@@ -8,55 +8,32 @@ import {
   Typography,
   buttonVariants,
 } from "@heroui/react";
+import { User, LayoutGrid, CalendarDays, Star } from "lucide-react";
 
 const features = [
   {
     title: "About Us",
     description:
       "Tell your story with a page that's already laid out — just add your words and photos.",
-    icon: (
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4Zm0 2c-3.31 0-8 1.66-8 4.5V21h16v-2.5c0-2.84-4.69-4.5-8-4.5Z"
-      />
-    ),
+    icon: User,
   },
   {
     title: "Portfolio & Products",
     description:
       "Show off what you make or sell in a clean gallery your customers can browse on any device.",
-    icon: (
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M4 5h16v14H4V5Zm0 5h16M9 20V10"
-      />
-    ),
+    icon: LayoutGrid,
   },
   {
     title: "Book & Order",
     description:
       "Let customers request an appointment or place an order right from your site — no phone tag.",
-    icon: (
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M8 3v3m8-3v3M4.5 9h15M6 5h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Z"
-      />
-    ),
+    icon: CalendarDays,
   },
   {
     title: "Reviews",
     description:
       "Collect and display real feedback from real customers to build trust with new ones.",
-    icon: (
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="m12 3 2.6 5.6 6.1.6-4.6 4.2 1.3 6-5.4-3.1-5.4 3.1 1.3-6-4.6-4.2 6.1-.6L12 3Z"
-      />
-    ),
+    icon: Star,
   },
 ];
 
@@ -64,17 +41,20 @@ const steps = [
   {
     number: "01",
     title: "Sign up",
-    description: "Create your account and pick a name — you'll get yourname.mydomain.com instantly.",
+    description:
+      "Create your account and pick a name — you'll get mybiz.host/yourname instantly.",
   },
   {
     number: "02",
     title: "Customize",
-    description: "Add your About text, photos, products or services, and contact details.",
+    description:
+      "Add your About text, photos, products or services, and contact details.",
   },
   {
     number: "03",
     title: "Go live",
-    description: "Share your link. Customers can browse, book, and leave reviews right away.",
+    description:
+      "Share your link. Customers can browse, book, and leave reviews right away.",
   },
 ];
 
@@ -84,7 +64,7 @@ export default function Home() {
       <header className="sticky top-0 z-10 border-b border-border bg-background/80 backdrop-blur-sm">
         <div className="mx-auto flex w-full max-w-6xl items-center justify-between px-6 py-4">
           <span className="text-lg font-semibold tracking-tight text-foreground">
-            Bizmanager
+            MyBiz.host
           </span>
           <nav className="flex items-center gap-4">
             <HeroLink href="/login" className="hidden text-sm sm:block">
@@ -107,13 +87,13 @@ export default function Home() {
           <Typography.Paragraph className="max-w-xl text-lg text-muted">
             A homepage with About Us, your portfolio or products, booking or
             ordering, and reviews — all on your own{" "}
-            <span className="font-medium text-foreground">name.mydomain.com</span>.
+            <span className="font-medium text-foreground">mybiz.host/yourname</span>.
           </Typography.Paragraph>
 
           <form className="flex w-full max-w-md flex-col gap-3 sm:flex-row">
             <InputGroup className="flex-1">
+              <InputGroup.Prefix>mybiz.host/</InputGroup.Prefix>
               <InputGroup.Input placeholder="yourbusiness" />
-              <InputGroup.Suffix>.mydomain.com</InputGroup.Suffix>
             </InputGroup>
             <Button type="submit">Claim it — it&apos;s free</Button>
           </form>
@@ -134,20 +114,12 @@ export default function Home() {
               </Typography.Paragraph>
             </div>
             <div className="mt-14 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-              {features.map((feature) => (
-                <Card key={feature.title}>
+              {features.map(({ title, description, icon: Icon }) => (
+                <Card key={title}>
                   <Card.Header>
-                    <svg
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth={1.5}
-                      className="h-9 w-9 text-foreground"
-                    >
-                      {feature.icon}
-                    </svg>
-                    <Card.Title className="mt-4 text-base">{feature.title}</Card.Title>
-                    <Card.Description>{feature.description}</Card.Description>
+                    <Icon className="h-9 w-9 text-foreground" strokeWidth={1.5} />
+                    <Card.Title className="mt-4 text-base">{title}</Card.Title>
+                    <Card.Description>{description}</Card.Description>
                   </Card.Header>
                 </Card>
               ))}
@@ -164,14 +136,14 @@ export default function Home() {
               </Typography.Heading>
             </div>
             <div className="mt-14 grid grid-cols-1 gap-10 sm:grid-cols-3">
-              {steps.map((step) => (
-                <div key={step.number} className="flex flex-col gap-3">
-                  <span className="text-sm font-semibold text-muted">{step.number}</span>
+              {steps.map(({ number, title, description }) => (
+                <div key={number} className="flex flex-col gap-3">
+                  <span className="text-sm font-semibold text-muted">{number}</span>
                   <Typography.Heading level={3} className="text-lg">
-                    {step.title}
+                    {title}
                   </Typography.Heading>
                   <Typography.Paragraph size="sm" className="text-muted">
-                    {step.description}
+                    {description}
                   </Typography.Paragraph>
                 </div>
               ))}
@@ -187,7 +159,7 @@ export default function Home() {
                 <span className="h-2.5 w-2.5 rounded-full bg-danger" />
                 <span className="h-2.5 w-2.5 rounded-full bg-warning" />
                 <span className="h-2.5 w-2.5 rounded-full bg-success" />
-                <Chip size="sm" className="ml-3">acme.mydomain.com</Chip>
+                <Chip size="sm" className="ml-3">mybiz.host/acme</Chip>
               </div>
               <div className="grid grid-cols-1 gap-8 p-8 sm:grid-cols-2">
                 <div>
@@ -195,9 +167,8 @@ export default function Home() {
                     Acme Pottery Studio
                   </Typography.Heading>
                   <Typography.Paragraph size="sm" className="mt-2 text-muted">
-                    Handcrafted ceramics, made in small batches since 2015.
-                    Every piece is wheel-thrown and fired in our backyard
-                    kiln.
+                    Handcrafted ceramics, made in small batches since 2015. Every
+                    piece is wheel-thrown and fired in our backyard kiln.
                   </Typography.Paragraph>
                   <div className="mt-4 flex items-center gap-1 text-sm text-muted">
                     <span className="text-warning">★★★★★</span>
@@ -238,7 +209,7 @@ export default function Home() {
 
       <footer className="border-t border-border py-8">
         <div className="mx-auto flex w-full max-w-6xl flex-col items-center justify-between gap-3 px-6 text-sm text-muted sm:flex-row">
-          <span>© {new Date().getFullYear()} Bizmanager</span>
+          <span>© {new Date().getFullYear()} MyBiz.host</span>
           <span>Every business deserves a home online.</span>
         </div>
       </footer>

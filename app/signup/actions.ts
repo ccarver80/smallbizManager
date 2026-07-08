@@ -3,24 +3,19 @@
 import * as z from "zod";
 import { prisma } from "@/lib/prisma";
 import { hashPassword } from "@/lib/password";
-import { RESERVED_SUBDOMAINS, SUBDOMAIN_PATTERN } from "@/lib/subdomain";
+import { RESERVED_SLUGS, SLUG_PATTERN } from "@/lib/slug";
 import { signIn } from "@/auth";
-import { BusinessType } from "@/lib/generated/prisma/enums";
 
 const SignupSchema = z
   .object({
     businessName: z.string().trim().min(2, "Business name must be at least 2 characters."),
-    subdomain: z
+    slug: z
       .string()
       .trim()
       .toLowerCase()
-      .min(3, "Domain must be at least 3 characters.")
-      .max(63, "Domain must be at most 63 characters.")
-      .regex(
-        SUBDOMAIN_PATTERN,
-        "Use lowercase letters, numbers, and hyphens only.",
-      ),
-    businessType: z.enum(BusinessType, "Choose a business type."),
+      .min(3, "URL must be at least 3 characters.")
+      .max(63, "URL must be at most 63 characters.")
+      .regex(SLUG_PATTERN, "Use lowercase letters, numbers, and hyphens only."),
     email: z.email("Please enter a valid email.").trim().toLowerCase(),
     password: z
       .string()
@@ -38,8 +33,7 @@ export type SignupState =
   | {
       errors?: {
         businessName?: string[];
-        subdomain?: string[];
-        businessType?: string[];
+        slug?: string[];
         email?: string[];
         password?: string[];
         confirmPassword?: string[];
@@ -54,8 +48,7 @@ export async function signup(
 ): Promise<SignupState> {
   const validatedFields = SignupSchema.safeParse({
     businessName: formData.get("businessName"),
-    subdomain: formData.get("subdomain"),
-    businessType: formData.get("businessType"),
+    slug: formData.get("slug"),
     email: formData.get("email"),
     password: formData.get("password"),
     confirmPassword: formData.get("confirmPassword"),
@@ -65,19 +58,19 @@ export async function signup(
     return { errors: z.flattenError(validatedFields.error).fieldErrors };
   }
 
-  const { businessName, subdomain, businessType, email, password } = validatedFields.data;
+  const { businessName, slug, email, password } = validatedFields.data;
 
-  if (RESERVED_SUBDOMAINS.has(subdomain)) {
-    return { errors: { subdomain: ["This domain is reserved."] } };
+  if (RESERVED_SLUGS.has(slug)) {
+    return { errors: { slug: ["This URL is reserved."] } };
   }
 
   const [existingBusiness, existingUser] = await Promise.all([
-    prisma.business.findUnique({ where: { subdomain } }),
+    prisma.business.findUnique({ where: { slug } }),
     prisma.user.findUnique({ where: { email } }),
   ]);
 
   if (existingBusiness) {
-    return { errors: { subdomain: ["This domain is already taken."] } };
+    return { errors: { slug: ["This URL is already taken."] } };
   }
   if (existingUser) {
     return { errors: { email: ["An account with this email already exists."] } };
@@ -88,8 +81,7 @@ export async function signup(
   await prisma.business.create({
     data: {
       name: businessName,
-      subdomain,
-      businessType,
+      slug,
       users: {
         create: {
           email,

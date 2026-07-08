@@ -7,9 +7,12 @@ datasource db {
   provider = "postgresql"
 }
 
-enum BusinessType {
-  SERVICE
-  PRODUCT
+enum QuoteStatus {
+  NEW
+  REVIEWED
+  SENT
+  ACCEPTED
+  DECLINED
 }
 
 enum AppointmentStatus {
@@ -45,7 +48,7 @@ model Plans {
 
 model Business {
   id           String        @id @default(cuid())
-  subdomain    String        @unique
+  slug         String        @unique
   name         String
   tagline      String?
   aboutText    String?
@@ -54,17 +57,23 @@ model Business {
   address      String?
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
-  published    Boolean       @default(false)
-  businessType BusinessType  @default(SERVICE)
-  products     Product[]
-  reviews      Review[]
-  users        User[]
-  customers    Customer[]
-  messages     Message[]
-  photos       Photo[]
-  page_views   Int           @default(0)
-  appointments Appointment[]
-  orders       Order[]
+  published            Boolean        @default(false)
+  appointment_service  Boolean        @default(false)
+  quote_service        Boolean        @default(false)
+  product_service      Boolean        @default(false)
+  message_service      Boolean        @default(true)
+  event_service        Boolean        @default(false)
+  products             Product[]
+  reviews              Review[]
+  users                User[]
+  customers            Customer[]
+  messages             Message[]
+  photos               Photo[]
+  page_views           Int            @default(0)
+  appointments         Appointment[]
+  orders               Order[]
+  quoteRequests        QuoteRequest[]
+  events               Event[]
 }
 
 model Customer {
@@ -199,4 +208,36 @@ model OrderItem {
 
   @@index([orderId])
   @@index([productId])
+}
+
+model QuoteRequest {
+  id             String      @id @default(cuid())
+  businessId     String
+  business       Business    @relation(fields: [businessId], references: [id])
+  customerName   String
+  customerEmail  String
+  customerPhone  String?
+  description    String
+  serviceAddress String?
+  timeline       String?
+  notes          String?
+  status         QuoteStatus @default(NEW)
+  createdAt      DateTime    @default(now())
+
+  @@index([businessId])
+}
+
+model Event {
+  id          String    @id @default(cuid())
+  businessId  String
+  business    Business  @relation(fields: [businessId], references: [id])
+  title       String
+  description String?
+  location    String?
+  startsAt    DateTime
+  endsAt      DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([businessId])
 }
