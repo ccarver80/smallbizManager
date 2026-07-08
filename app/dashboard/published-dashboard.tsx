@@ -28,6 +28,7 @@ import { OrdersTable } from "./orders-table";
 import { AddOrderForm } from "./add-order-form";
 import { AppointmentsTable } from "./appointments-table";
 import { EventsSection } from "./events-section";
+import { AddServiceModal } from "./add-service-modal";
 
 const calendarIcon = (
   <path
@@ -81,6 +82,16 @@ export function PublishedDashboard({
     <div className="flex flex-1 flex-col bg-surface-secondary px-6 py-12">
       <div className="mx-auto flex w-full max-w-5xl flex-col gap-6">
         <DashboardHeader business={business} />
+
+        <AddServiceModal
+          services={{
+            appointment_service: business.appointment_service,
+            quote_service: business.quote_service,
+            product_service: business.product_service,
+            message_service: business.message_service,
+            event_service: business.event_service,
+          }}
+        />
 
         <Tabs>
           <Tabs.ListContainer>

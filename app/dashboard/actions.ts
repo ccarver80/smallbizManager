@@ -134,3 +134,29 @@ export async function updateBusiness(
       : "Changes saved. Fill in every field to publish your page.",
   };
 }
+
+export type UpdateServicesState =
+  | { success?: boolean; message?: string }
+  | undefined;
+
+export async function updateServices(
+  _state: UpdateServicesState,
+  formData: FormData,
+): Promise<UpdateServicesState> {
+  const session = await auth();
+  if (!session?.user) return { message: "You must be signed in." };
+
+  await prisma.business.update({
+    where: { id: session.user.businessId },
+    data: {
+      appointment_service: formData.get("appointment_service") === "on",
+      quote_service: formData.get("quote_service") === "on",
+      product_service: formData.get("product_service") === "on",
+      message_service: formData.get("message_service") === "on",
+      event_service: formData.get("event_service") === "on",
+    },
+  });
+
+  revalidatePath("/dashboard");
+  return { success: true };
+}

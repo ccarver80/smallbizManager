@@ -7,7 +7,6 @@ import {
   Typography,
   buttonVariants,
 } from "@heroui/react";
-import { BusinessType } from "@/lib/generated/prisma/enums";
 import { GallerySection } from "./gallery-section";
 import { ReviewsSection } from "./reviews-section";
 import { BookingSection } from "./booking-section";
@@ -34,6 +33,9 @@ export default async function TenantHomePage({ params }: Props) {
 
   await incrementPageView(business.id);
 
+  const isAppointment = business.appointment_service;
+  const isProduct = business.product_service;
+
   return (
     <div className="flex flex-1 flex-col">
       <header className="sticky top-0 z-10 border-b border-border bg-background/80 backdrop-blur-sm">
@@ -43,18 +45,18 @@ export default async function TenantHomePage({ params }: Props) {
           </span>
           <nav className="hidden items-center gap-6 text-sm sm:flex">
             {business.aboutText && <HeroLink href="#about">About</HeroLink>}
-            {business.businessType === BusinessType.APPOINTMENT &&
+            {isAppointment &&
               business.photos.length > 0 && (
                 <HeroLink href="#gallery">Gallery</HeroLink>
               )}
-            {business.businessType === BusinessType.APPOINTMENT && (
+            {isAppointment && (
               <HeroLink href="#booking">Book now</HeroLink>
             )}
-            {business.businessType === BusinessType.PRODUCT &&
+            {isProduct &&
               business.products.length > 0 && (
                 <HeroLink href="#products">Products</HeroLink>
               )}
-            {business.businessType === BusinessType.PRODUCT && (
+            {isProduct && (
               <HeroLink href="#order">Order now</HeroLink>
             )}
             <HeroLink href="#reviews">Reviews</HeroLink>
@@ -86,7 +88,7 @@ export default async function TenantHomePage({ params }: Props) {
             >
               Get in touch
             </a>
-            {business.businessType === BusinessType.APPOINTMENT && (
+            {isAppointment && (
               <a
                 href="#booking"
                 className="rounded-full border border-white/25 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-white/10"
@@ -94,7 +96,7 @@ export default async function TenantHomePage({ params }: Props) {
                 Book now
               </a>
             )}
-            {business.businessType === BusinessType.PRODUCT &&
+            {isProduct &&
               business.products.length > 0 && (
                 <a
                   href="#products"
@@ -103,7 +105,7 @@ export default async function TenantHomePage({ params }: Props) {
                   View products
                 </a>
               )}
-            {business.businessType === BusinessType.PRODUCT && (
+            {isProduct && (
               <a
                 href="#order"
                 className="rounded-full border border-white/25 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-white/10"
@@ -129,17 +131,17 @@ export default async function TenantHomePage({ params }: Props) {
         )}
 
         {/* Gallery */}
-        {business.businessType === BusinessType.APPOINTMENT && (
+        {isAppointment && (
           <GallerySection photos={business.photos} businessName={business.name} />
         )}
 
         {/* Booking */}
-        {business.businessType === BusinessType.APPOINTMENT && (
+        {isAppointment && (
           <BookingSection businessId={business.id} subdomain={business.slug} />
         )}
 
         {/* Products */}
-        {business.businessType === BusinessType.PRODUCT && business.products.length > 0 && (
+        {isProduct && business.products.length > 0 && (
           <section
             id="products"
             className="border-t border-border bg-surface-secondary py-20"
@@ -188,7 +190,7 @@ export default async function TenantHomePage({ params }: Props) {
         )}
 
         {/* Order */}
-        {business.businessType === BusinessType.PRODUCT && (
+        {isProduct && (
           <OrderSection
             businessId={business.id}
             subdomain={business.slug}

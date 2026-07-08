@@ -51,7 +51,7 @@ export function EventsSection({ events }: { events: BusinessEvent[] }) {
                       await deleteEvent(event.id);
                     }}
                   >
-                    <Button type="submit" variant="outline" size="sm" color="danger">
+                    <Button type="submit" variant="outline" size="sm" className="border-danger text-danger hover:bg-danger/10">
                       Remove
                     </Button>
                   </form>
